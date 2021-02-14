@@ -1,4 +1,4 @@
-package dev.lowcarb.mobile
+package page.okto.carbnote
 
 import io.flutter.embedding.android.FlutterActivity
 

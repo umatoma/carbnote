@@ -1,0 +1,10 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        generate_for:
+          include:
+            - lib/**/*state.dart
+            - lib/models/*.dart
+          exclude:
+            - lib/**/*.freezed.dart
