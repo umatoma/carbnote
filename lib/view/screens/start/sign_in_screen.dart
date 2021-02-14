@@ -91,7 +91,11 @@ class SignInScreen extends HookWidget {
                         child: const Text('ログイン'),
                       ),
                       CnSecondaryButton(
-                        onPressed: () {},
+                        onPressed: state.canResetPassword
+                            ? () => context
+                                .read(signInStateProvider)
+                                .resetPassword()
+                            : null,
                         child: const Text('入力したアドレスでパスワード再発行'),
                       ),
                     ]),

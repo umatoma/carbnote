@@ -70,5 +70,18 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
     }
   }
 
-  Future<void> resetPassword() async {}
+  Future<void> resetPassword() async {
+    state = state.copyWith(isProcessing: true);
+    try {
+      await read(authRepoProvider).sendPasswordResetEmail(state.email);
+      state = state.copyWith(isProcessing: false);
+    } catch (e, stackTrace) {
+      print(e);
+      print(stackTrace);
+      state = state.copyWith(
+        error: e,
+        isProcessing: false,
+      );
+    }
+  }
 }

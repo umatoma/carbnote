@@ -47,7 +47,7 @@ class CnBottomNav extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           IconButton(
-            onPressed: () => onPressed(0),
+            onPressed: index == 0 ? null : () => onPressed(0),
             icon: Icon(
               CupertinoIcons.home,
               color: index == 0
@@ -56,7 +56,7 @@ class CnBottomNav extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => onPressed(0),
+            onPressed: index == 1 ? null : () => onPressed(1),
             icon: Icon(
               CupertinoIcons.bell,
               color: index == 1
@@ -66,7 +66,7 @@ class CnBottomNav extends StatelessWidget {
           ),
           const SizedBox(width: 32),
           IconButton(
-            onPressed: () => onPressed(0),
+            onPressed: index == 2 ? null : () => onPressed(2),
             icon: Icon(
               CupertinoIcons.chart_bar,
               color: index == 2
@@ -75,7 +75,7 @@ class CnBottomNav extends StatelessWidget {
             ),
           ),
           IconButton(
-            onPressed: () => onPressed(0),
+            onPressed: index == 3 ? null : () => onPressed(3),
             icon: Icon(
               CupertinoIcons.person,
               color: index == 3
