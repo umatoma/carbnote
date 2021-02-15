@@ -42,23 +42,26 @@ class CnProgressContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        child,
-        if (isProgressing) ...[
-          Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.black.withOpacity(0.5),
-          ),
-          const Align(
-            alignment: Alignment.topCenter,
-            child: SafeArea(
-              child: LinearProgressIndicator(),
+    return WillPopScope(
+      onWillPop: () async => isProgressing == false,
+      child: Stack(
+        children: [
+          child,
+          if (isProgressing) ...[
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              color: Colors.black.withOpacity(0.5),
             ),
-          ),
+            const Align(
+              alignment: Alignment.topCenter,
+              child: SafeArea(
+                child: LinearProgressIndicator(),
+              ),
+            ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }

@@ -143,20 +143,20 @@ class SignUpStateNotifier extends StateNotifier<SignUpState> {
   Future<void> sumbitSignInSetting({bool skip = false}) async {
     state = state.copyWith(isProcessing: true);
     try {
-      if (skip) {
-        await read(authRepoProvider).signInAnonymously();
-      } else {
-        await read(authRepoProvider).signUpWithEmailAndPassword(
-          email: state.form.email,
-          password: state.form.password,
-        );
-      }
-
+      final authRepo = read(authRepoProvider);
+      final authUser = skip
+          ? await authRepo.signInAnonymously()
+          : await authRepo.signUpWithEmailAndPassword(
+              email: state.form.email,
+              password: state.form.password,
+            );
       final imageURL = state.form.imageFile == null
           ? 'https://placehold.jp/150x150.png'
-          : await read(authRepoProvider)
-              .uploadProfileImage(state.form.imageFile);
-      await read(authRepoProvider).updateCurrentUser(
+          : await authRepo.uploadUserImage(
+              userID: authUser.id,
+              file: state.form.imageFile,
+            );
+      await authRepo.updateCurrentUser(
         nickname: state.form.nickname,
         imageURL: imageURL,
       );

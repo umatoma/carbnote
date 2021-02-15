@@ -1,5 +1,6 @@
 import 'package:carbnote/view/providers.dart';
 import 'package:carbnote/view/screens/home/home_screen.dart';
+import 'package:carbnote/view/screens/start/welcome_back_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -55,7 +56,7 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
       final navKey = read(navKeyProvider);
       await Navigator.of(navKey.currentState.context).pushAndRemoveUntil(
         CupertinoPageRoute<void>(
-          builder: (_) => const HomeScreen(),
+          builder: (_) => const WelcomeBackScreen(),
           fullscreenDialog: true,
         ),
         (route) => false,

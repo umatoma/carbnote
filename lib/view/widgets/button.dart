@@ -96,22 +96,38 @@ class CnBottomButtonsContainer extends StatelessWidget {
   const CnBottomButtonsContainer({
     Key key,
     @required this.children,
+    this.shadowColor = Colors.white,
   }) : super(key: key);
 
   final List<Widget> children;
+  final Color shadowColor;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(32, 16, 32, 64),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          for (final child in children) ...[
-            child,
-            if (children.last != child) const SizedBox(height: 16),
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            shadowColor,
+            shadowColor.withOpacity(0.0),
           ],
-        ],
+          begin: Alignment.bottomCenter,
+          end: Alignment.topCenter,
+        ),
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(32, 16, 32, 32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (final child in children) ...[
+                child,
+                if (children.last != child) const SizedBox(height: 16),
+              ],
+            ],
+          ),
+        ),
       ),
     );
   }

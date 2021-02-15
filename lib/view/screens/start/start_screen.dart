@@ -20,35 +20,40 @@ class StartScreen extends StatelessWidget {
             color: Colors.black.withOpacity(0.5),
             child: Column(
               children: [
-                const SizedBox(height: 192),
-                Text(
-                  'Carb Note',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline2
-                      .apply(color: Colors.white),
+                Expanded(
+                  child: Center(
+                    child: Text(
+                      'Carb Note',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4
+                          .apply(color: Colors.white),
+                    ),
+                  ),
                 ),
-                const Spacer(),
-                CnBottomButtonsContainer(children: [
-                  CnPrimaryButton(
-                    onPressed: () => Navigator.of(context).push(
-                      CupertinoPageRoute<void>(
-                        builder: (_) => const SignUpScreen(),
-                        fullscreenDialog: true,
+                CnBottomButtonsContainer(
+                  shadowColor: Colors.black,
+                  children: [
+                    CnPrimaryButton(
+                      onPressed: () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) => const SignUpScreen(),
+                          fullscreenDialog: true,
+                        ),
                       ),
+                      child: const Text('はじめる'),
                     ),
-                    child: const Text('はじめる'),
-                  ),
-                  CnSecondaryButton(
-                    onPressed: () => Navigator.of(context).push(
-                      CupertinoPageRoute<void>(
-                        builder: (_) => const SignInScreen(),
-                        fullscreenDialog: true,
+                    CnSecondaryButton(
+                      onPressed: () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) => const SignInScreen(),
+                          fullscreenDialog: true,
+                        ),
                       ),
+                      child: const Text('ログイン'),
                     ),
-                    child: const Text('ログイン'),
-                  ),
-                ]),
+                  ],
+                ),
               ],
             ),
           ),

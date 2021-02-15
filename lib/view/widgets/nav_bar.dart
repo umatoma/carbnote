@@ -20,9 +20,11 @@ class CnTransparentNavBar extends StatefulWidget
   const CnTransparentNavBar({
     Key key,
     this.leading,
+    this.middle,
   }) : super(key: key);
 
   final Widget leading;
+  final Widget middle;
 
   @override
   _MyCupertinoNavigationBarState createState() =>
@@ -53,6 +55,15 @@ class _MyCupertinoNavigationBarState extends State<CnTransparentNavBar> {
               : Padding(
                   padding: const EdgeInsets.only(left: 16),
                   child: widget.leading,
+                ),
+          middle: widget.middle == null
+              ? null
+              : DefaultTextStyle(
+                  style: Theme.of(context)
+                      .textTheme
+                      .subtitle1
+                      .apply(color: Colors.white),
+                  child: widget.middle,
                 ),
           centerMiddle: true,
           middleSpacing: 6.0,

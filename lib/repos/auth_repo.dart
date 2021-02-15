@@ -8,9 +8,10 @@ import 'package:uuid/uuid.dart';
 
 class AuthRepo {
   Stream<AuthUser> currentUserChanges() {
-    return FirebaseAuth.instance
-        .authStateChanges()
-        .map((user) => _firebaseUserToAuthUser(user));
+    return FirebaseAuth.instance.userChanges().map((user) {
+      print(user.photoURL);
+      return _firebaseUserToAuthUser(user);
+    });
   }
 
   AuthUser getCurrentUser() {
@@ -28,9 +29,12 @@ class AuthRepo {
     return _firebaseUserToAuthUser(user);
   }
 
-  Future<String> uploadProfileImage(File file) async {
+  Future<String> uploadUserImage({
+    @required String userID,
+    @required File file,
+  }) async {
     final snapshot = await FirebaseStorage.instance
-        .ref('/profile_images/${Uuid().v4()}')
+        .ref('/users/$userID/${Uuid().v4()}')
         .putFile(file);
     return await snapshot.ref.getDownloadURL();
   }

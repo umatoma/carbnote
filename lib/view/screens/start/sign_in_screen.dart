@@ -3,6 +3,7 @@ import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/container.dart';
 import 'package:carbnote/view/widgets/form.dart';
 import 'package:carbnote/view/widgets/nav_bar.dart';
+import 'package:carbnote/view/widgets/scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +23,7 @@ class SignInScreen extends HookWidget {
         onWillPop: () async => false,
         child: CnProgressContainer(
           isProgressing: state.isProcessing,
-          child: Scaffold(
+          child: CnScaffold(
             extendBody: true,
             extendBodyBehindAppBar: true,
             appBar: CnTransparentNavBar(
@@ -36,7 +37,7 @@ class SignInScreen extends HookWidget {
                 color: Colors.black.withOpacity(0.5),
                 child: Column(
                   children: [
-                    const SizedBox(height: 128),
+                    const SizedBox(height: 92),
                     Text(
                       'ログイン',
                       style: Theme.of(context)
@@ -83,22 +84,25 @@ class SignInScreen extends HookWidget {
                       ),
                     ),
                     const Spacer(),
-                    CnBottomButtonsContainer(children: [
-                      CnPrimaryButton(
-                        onPressed: state.canSignIn
-                            ? () => context.read(signInStateProvider).signIn()
-                            : null,
-                        child: const Text('ログイン'),
-                      ),
-                      CnSecondaryButton(
-                        onPressed: state.canResetPassword
-                            ? () => context
-                                .read(signInStateProvider)
-                                .resetPassword()
-                            : null,
-                        child: const Text('入力したアドレスでパスワード再発行'),
-                      ),
-                    ]),
+                    CnBottomButtonsContainer(
+                      shadowColor: Colors.black,
+                      children: [
+                        CnPrimaryButton(
+                          onPressed: state.canSignIn
+                              ? () => context.read(signInStateProvider).signIn()
+                              : null,
+                          child: const Text('ログイン'),
+                        ),
+                        CnSecondaryButton(
+                          onPressed: state.canResetPassword
+                              ? () => context
+                                  .read(signInStateProvider)
+                                  .resetPassword()
+                              : null,
+                          child: const Text('入力したアドレスでパスワード再発行'),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),

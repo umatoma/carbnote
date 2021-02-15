@@ -8,8 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
 
-class WelcomeScreen extends HookWidget {
-  const WelcomeScreen() : super();
+class WelcomeBackScreen extends HookWidget {
+  const WelcomeBackScreen() : super();
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class WelcomeScreen extends HookWidget {
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         body: CnBackgroundImageContainer(
-          image: const AssetImage('assets/images/welcome_background.png'),
+          image: const AssetImage('assets/images/welcome_back_background.png'),
           child: Container(
             color: Colors.black.withOpacity(0.5),
             child: Column(
@@ -33,12 +33,7 @@ class WelcomeScreen extends HookWidget {
                         TextSpan(
                           children: [
                             TextSpan(text: '${user?.nickname ?? "..."} さん\n'),
-                            const TextSpan(
-                              text: 'Carb Note',
-                              style: TextStyle(color: Color(0xFFFFCC00)),
-                            ),
-                            const TextSpan(text: ' へ\n'),
-                            const TextSpan(text: 'ようこそ！'),
+                            const TextSpan(text: 'おかえりなさい！'),
                           ],
                         ),
                         style: Theme.of(context)

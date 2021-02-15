@@ -5,6 +5,7 @@ import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/container.dart';
 import 'package:carbnote/view/widgets/form.dart';
 import 'package:carbnote/view/widgets/nav_bar.dart';
+import 'package:carbnote/view/widgets/scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,7 +25,7 @@ class SignUpScreen extends HookWidget {
         onWillPop: () async => false,
         child: CnProgressContainer(
           isProgressing: state.isProcessing,
-          child: Scaffold(
+          child: CnScaffold(
             extendBody: true,
             extendBodyBehindAppBar: true,
             appBar: CnTransparentNavBar(
@@ -80,7 +81,7 @@ class SetGoalPage extends HookWidget {
         color: Colors.black.withOpacity(0.5),
         child: Column(
           children: [
-            const SizedBox(height: 128),
+            const SizedBox(height: 92),
             Text(
               '目標',
               style: Theme.of(context)
@@ -88,7 +89,7 @@ class SetGoalPage extends HookWidget {
                   .headline4
                   .apply(color: Colors.white),
             ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 32),
             Text(
               '1日あたりの糖質摂取量',
               style: Theme.of(context)
@@ -127,6 +128,7 @@ class SetGoalPage extends HookWidget {
             ),
             const Spacer(),
             CnBottomButtonsContainer(
+              shadowColor: Colors.black,
               children: [
                 CnPrimaryButton(
                   onPressed: () =>
@@ -155,7 +157,7 @@ class SetProfilePage extends HookWidget {
         color: Colors.black.withOpacity(0.5),
         child: Column(
           children: [
-            const SizedBox(height: 128),
+            const SizedBox(height: 92),
             Text(
               'プロフィール',
               style: Theme.of(context)
@@ -163,7 +165,7 @@ class SetProfilePage extends HookWidget {
                   .headline4
                   .apply(color: Colors.white),
             ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 32),
             CnImageField(
               onPressed: () =>
                   context.read(signUpStateProvider).pickImageFile(),
@@ -187,6 +189,7 @@ class SetProfilePage extends HookWidget {
             ),
             const Spacer(),
             CnBottomButtonsContainer(
+              shadowColor: Colors.black,
               children: [
                 CnPrimaryButton(
                   onPressed: state.canSubmitProfile
@@ -216,7 +219,7 @@ class SetSignInSettingPage extends HookWidget {
         color: Colors.black.withOpacity(0.5),
         child: Column(
           children: [
-            const SizedBox(height: 128),
+            const SizedBox(height: 92),
             Text(
               'ログイン設定',
               style: Theme.of(context)
@@ -224,7 +227,7 @@ class SetSignInSettingPage extends HookWidget {
                   .headline4
                   .apply(color: Colors.white),
             ),
-            const SizedBox(height: 64),
+            const SizedBox(height: 32),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Column(
@@ -282,6 +285,7 @@ class SetSignInSettingPage extends HookWidget {
             ),
             const Spacer(),
             CnBottomButtonsContainer(
+              shadowColor: Colors.black,
               children: [
                 CnPrimaryButton(
                   onPressed: state.canSubmitSignInSetting

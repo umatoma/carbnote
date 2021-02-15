@@ -31,7 +31,7 @@ class CnTextField extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           width: 1,
-          color: Theme.of(context).primaryColor,
+          color: Colors.grey[300],
         ),
       ),
       child: Center(
@@ -62,6 +62,7 @@ class CnTextField extends StatelessWidget {
               child: Icon(
                 prefixIcon,
                 size: 16,
+                color: Theme.of(context).primaryColor,
               ),
             ),
             // prefixIcon: Icon(CupertinoIcons.pencil),
@@ -95,7 +96,7 @@ class CnImageField extends StatelessWidget {
               borderRadius: BorderRadius.circular(64),
               border: Border.all(
                 width: 1,
-                color: Theme.of(context).primaryColor,
+                color: Colors.grey[300],
               ),
             ),
             child: Material(

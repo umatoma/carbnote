@@ -9,10 +9,13 @@ final authRepoProvider = Provider((ref) {
   return AuthRepo();
 });
 
-// ---------- State ---------- //
+// ---------- AuthUser ---------- //
 
-final currentUserProvider = StreamProvider.autoDispose((ref) {
+final currentUserStreamProvider = StreamProvider.autoDispose((ref) {
   return ref.read(authRepoProvider).currentUserChanges();
+});
+final currentUserProvider = Provider.autoDispose((ref) {
+  return ref.watch(currentUserStreamProvider).data?.value;
 });
 
 // ---------- Navigator ---------- //

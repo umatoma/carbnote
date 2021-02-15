@@ -1,5 +1,6 @@
 import 'package:carbnote/view/providers.dart';
 import 'package:carbnote/view/screens/setting/setting_screen.dart';
+import 'package:carbnote/view/widgets/image.dart';
 import 'package:carbnote/view/widgets/nav_bar.dart';
 import 'package:carbnote/view/widgets/scaffold.dart';
 import 'package:flutter/cupertino.dart';
@@ -38,10 +39,7 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {},
         child: const Icon(CupertinoIcons.add),
       ),
-      bottomNavigationBar: CnBottomNav(
-        onPressed: (index) {},
-        index: 0,
-      ),
+      bottomNavigationBar: const CnBottomNav(index: 0),
     );
   }
 }
@@ -51,23 +49,15 @@ class AuthUserRow extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authUser = useProvider(currentUserProvider).data?.value;
+    final authUser = useProvider(currentUserProvider);
 
     return Row(
       children: [
-        SizedBox(
-          width: 48,
-          height: 48,
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: 1, color: Colors.grey),
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: ClipOval(
-              child: authUser == null
-                  ? null
-                  : Image.network(authUser.imageURL, fit: BoxFit.cover),
-            ),
+        Hero(
+          tag: 'ProfileImage',
+          child: CnProfileImage(
+            authUser?.imageURL,
+            size: 48,
           ),
         ),
         const SizedBox(width: 16),
