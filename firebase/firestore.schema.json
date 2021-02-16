@@ -1,0 +1,30 @@
+{
+    "users": {
+        "document": {
+            "id": "...",
+            "nickname": "John",
+            "imageURL": "https://example.com/path/to/image.png",
+            "goalCarbGram": 100,
+            "isAnonymous": false,
+            "createdAt": "Timestamp",
+            "updatedAt": "Timestamp"
+        },
+        "collection": {
+            "records": {
+                "document": {
+                    "id": "...",
+                    "userID": "...",
+                    "timeType": "breakfast|lunch|dinner|snack",
+                    "name": "",
+                    "imageURL": "",
+                    "intakeGram": 100,
+                    "carbGram": 50,
+                    "recordedAt": "Timestamp",
+                    "createdAt": "Timestamp",
+                    "updatedAt": "Timestamp"
+                },
+                "collection": {}
+            }
+        }
+    }
+}

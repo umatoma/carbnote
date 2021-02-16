@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
-part of 'profile_edit_state.dart';
+part of 'user_edit_state.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -10,111 +10,128 @@ part of 'profile_edit_state.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-class _$ProfileEditFormTearOff {
-  const _$ProfileEditFormTearOff();
+class _$UserEditFormTearOff {
+  const _$UserEditFormTearOff();
 
 // ignore: unused_element
-  _ProfileEditForm call(
+  _UserEditForm call(
       {@required String nickname,
       @required String imageURL,
-      @nullable File imageFile}) {
-    return _ProfileEditForm(
+      @nullable File imageFile,
+      @required int goalCarbGram}) {
+    return _UserEditForm(
       nickname: nickname,
       imageURL: imageURL,
       imageFile: imageFile,
+      goalCarbGram: goalCarbGram,
     );
   }
 }
 
 /// @nodoc
 // ignore: unused_element
-const $ProfileEditForm = _$ProfileEditFormTearOff();
+const $UserEditForm = _$UserEditFormTearOff();
 
 /// @nodoc
-mixin _$ProfileEditForm {
+mixin _$UserEditForm {
   String get nickname;
   String get imageURL;
   @nullable
   File get imageFile;
+  int get goalCarbGram;
 
   @JsonKey(ignore: true)
-  $ProfileEditFormCopyWith<ProfileEditForm> get copyWith;
+  $UserEditFormCopyWith<UserEditForm> get copyWith;
 }
 
 /// @nodoc
-abstract class $ProfileEditFormCopyWith<$Res> {
-  factory $ProfileEditFormCopyWith(
-          ProfileEditForm value, $Res Function(ProfileEditForm) then) =
-      _$ProfileEditFormCopyWithImpl<$Res>;
-  $Res call({String nickname, String imageURL, @nullable File imageFile});
+abstract class $UserEditFormCopyWith<$Res> {
+  factory $UserEditFormCopyWith(
+          UserEditForm value, $Res Function(UserEditForm) then) =
+      _$UserEditFormCopyWithImpl<$Res>;
+  $Res call(
+      {String nickname,
+      String imageURL,
+      @nullable File imageFile,
+      int goalCarbGram});
 }
 
 /// @nodoc
-class _$ProfileEditFormCopyWithImpl<$Res>
-    implements $ProfileEditFormCopyWith<$Res> {
-  _$ProfileEditFormCopyWithImpl(this._value, this._then);
+class _$UserEditFormCopyWithImpl<$Res> implements $UserEditFormCopyWith<$Res> {
+  _$UserEditFormCopyWithImpl(this._value, this._then);
 
-  final ProfileEditForm _value;
+  final UserEditForm _value;
   // ignore: unused_field
-  final $Res Function(ProfileEditForm) _then;
+  final $Res Function(UserEditForm) _then;
 
   @override
   $Res call({
     Object nickname = freezed,
     Object imageURL = freezed,
     Object imageFile = freezed,
+    Object goalCarbGram = freezed,
   }) {
     return _then(_value.copyWith(
       nickname: nickname == freezed ? _value.nickname : nickname as String,
       imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
       imageFile: imageFile == freezed ? _value.imageFile : imageFile as File,
+      goalCarbGram:
+          goalCarbGram == freezed ? _value.goalCarbGram : goalCarbGram as int,
     ));
   }
 }
 
 /// @nodoc
-abstract class _$ProfileEditFormCopyWith<$Res>
-    implements $ProfileEditFormCopyWith<$Res> {
-  factory _$ProfileEditFormCopyWith(
-          _ProfileEditForm value, $Res Function(_ProfileEditForm) then) =
-      __$ProfileEditFormCopyWithImpl<$Res>;
+abstract class _$UserEditFormCopyWith<$Res>
+    implements $UserEditFormCopyWith<$Res> {
+  factory _$UserEditFormCopyWith(
+          _UserEditForm value, $Res Function(_UserEditForm) then) =
+      __$UserEditFormCopyWithImpl<$Res>;
   @override
-  $Res call({String nickname, String imageURL, @nullable File imageFile});
+  $Res call(
+      {String nickname,
+      String imageURL,
+      @nullable File imageFile,
+      int goalCarbGram});
 }
 
 /// @nodoc
-class __$ProfileEditFormCopyWithImpl<$Res>
-    extends _$ProfileEditFormCopyWithImpl<$Res>
-    implements _$ProfileEditFormCopyWith<$Res> {
-  __$ProfileEditFormCopyWithImpl(
-      _ProfileEditForm _value, $Res Function(_ProfileEditForm) _then)
-      : super(_value, (v) => _then(v as _ProfileEditForm));
+class __$UserEditFormCopyWithImpl<$Res> extends _$UserEditFormCopyWithImpl<$Res>
+    implements _$UserEditFormCopyWith<$Res> {
+  __$UserEditFormCopyWithImpl(
+      _UserEditForm _value, $Res Function(_UserEditForm) _then)
+      : super(_value, (v) => _then(v as _UserEditForm));
 
   @override
-  _ProfileEditForm get _value => super._value as _ProfileEditForm;
+  _UserEditForm get _value => super._value as _UserEditForm;
 
   @override
   $Res call({
     Object nickname = freezed,
     Object imageURL = freezed,
     Object imageFile = freezed,
+    Object goalCarbGram = freezed,
   }) {
-    return _then(_ProfileEditForm(
+    return _then(_UserEditForm(
       nickname: nickname == freezed ? _value.nickname : nickname as String,
       imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
       imageFile: imageFile == freezed ? _value.imageFile : imageFile as File,
+      goalCarbGram:
+          goalCarbGram == freezed ? _value.goalCarbGram : goalCarbGram as int,
     ));
   }
 }
 
 /// @nodoc
-class _$_ProfileEditForm implements _ProfileEditForm {
-  _$_ProfileEditForm(
+class _$_UserEditForm implements _UserEditForm {
+  _$_UserEditForm(
       {@required this.nickname,
       @required this.imageURL,
-      @nullable this.imageFile})
+      @nullable this.imageFile,
+      @required this.goalCarbGram})
       : assert(nickname != null),
-        assert(imageURL != null);
+        assert(imageURL != null),
+        assert(goalCarbGram != null);
 
   @override
   final String nickname;
@@ -123,16 +140,18 @@ class _$_ProfileEditForm implements _ProfileEditForm {
   @override
   @nullable
   final File imageFile;
+  @override
+  final int goalCarbGram;
 
   @override
   String toString() {
-    return 'ProfileEditForm(nickname: $nickname, imageURL: $imageURL, imageFile: $imageFile)';
+    return 'UserEditForm(nickname: $nickname, imageURL: $imageURL, imageFile: $imageFile, goalCarbGram: $goalCarbGram)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ProfileEditForm &&
+        (other is _UserEditForm &&
             (identical(other.nickname, nickname) ||
                 const DeepCollectionEquality()
                     .equals(other.nickname, nickname)) &&
@@ -141,7 +160,10 @@ class _$_ProfileEditForm implements _ProfileEditForm {
                     .equals(other.imageURL, imageURL)) &&
             (identical(other.imageFile, imageFile) ||
                 const DeepCollectionEquality()
-                    .equals(other.imageFile, imageFile)));
+                    .equals(other.imageFile, imageFile)) &&
+            (identical(other.goalCarbGram, goalCarbGram) ||
+                const DeepCollectionEquality()
+                    .equals(other.goalCarbGram, goalCarbGram)));
   }
 
   @override
@@ -149,19 +171,21 @@ class _$_ProfileEditForm implements _ProfileEditForm {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(nickname) ^
       const DeepCollectionEquality().hash(imageURL) ^
-      const DeepCollectionEquality().hash(imageFile);
+      const DeepCollectionEquality().hash(imageFile) ^
+      const DeepCollectionEquality().hash(goalCarbGram);
 
   @JsonKey(ignore: true)
   @override
-  _$ProfileEditFormCopyWith<_ProfileEditForm> get copyWith =>
-      __$ProfileEditFormCopyWithImpl<_ProfileEditForm>(this, _$identity);
+  _$UserEditFormCopyWith<_UserEditForm> get copyWith =>
+      __$UserEditFormCopyWithImpl<_UserEditForm>(this, _$identity);
 }
 
-abstract class _ProfileEditForm implements ProfileEditForm {
-  factory _ProfileEditForm(
+abstract class _UserEditForm implements UserEditForm {
+  factory _UserEditForm(
       {@required String nickname,
       @required String imageURL,
-      @nullable File imageFile}) = _$_ProfileEditForm;
+      @nullable File imageFile,
+      @required int goalCarbGram}) = _$_UserEditForm;
 
   @override
   String get nickname;
@@ -171,20 +195,22 @@ abstract class _ProfileEditForm implements ProfileEditForm {
   @nullable
   File get imageFile;
   @override
+  int get goalCarbGram;
+  @override
   @JsonKey(ignore: true)
-  _$ProfileEditFormCopyWith<_ProfileEditForm> get copyWith;
+  _$UserEditFormCopyWith<_UserEditForm> get copyWith;
 }
 
 /// @nodoc
-class _$ProfileEditStateTearOff {
-  const _$ProfileEditStateTearOff();
+class _$UserEditStateTearOff {
+  const _$UserEditStateTearOff();
 
 // ignore: unused_element
-  _ProfileEditState call(
+  _UserEditState call(
       {@required bool isProcessing,
       @nullable Object error,
-      @required ProfileEditForm form}) {
-    return _ProfileEditState(
+      @required UserEditForm form}) {
+    return _UserEditState(
       isProcessing: isProcessing,
       error: error,
       form: form,
@@ -194,37 +220,37 @@ class _$ProfileEditStateTearOff {
 
 /// @nodoc
 // ignore: unused_element
-const $ProfileEditState = _$ProfileEditStateTearOff();
+const $UserEditState = _$UserEditStateTearOff();
 
 /// @nodoc
-mixin _$ProfileEditState {
+mixin _$UserEditState {
   bool get isProcessing;
   @nullable
   Object get error;
-  ProfileEditForm get form;
+  UserEditForm get form;
 
   @JsonKey(ignore: true)
-  $ProfileEditStateCopyWith<ProfileEditState> get copyWith;
+  $UserEditStateCopyWith<UserEditState> get copyWith;
 }
 
 /// @nodoc
-abstract class $ProfileEditStateCopyWith<$Res> {
-  factory $ProfileEditStateCopyWith(
-          ProfileEditState value, $Res Function(ProfileEditState) then) =
-      _$ProfileEditStateCopyWithImpl<$Res>;
-  $Res call({bool isProcessing, @nullable Object error, ProfileEditForm form});
+abstract class $UserEditStateCopyWith<$Res> {
+  factory $UserEditStateCopyWith(
+          UserEditState value, $Res Function(UserEditState) then) =
+      _$UserEditStateCopyWithImpl<$Res>;
+  $Res call({bool isProcessing, @nullable Object error, UserEditForm form});
 
-  $ProfileEditFormCopyWith<$Res> get form;
+  $UserEditFormCopyWith<$Res> get form;
 }
 
 /// @nodoc
-class _$ProfileEditStateCopyWithImpl<$Res>
-    implements $ProfileEditStateCopyWith<$Res> {
-  _$ProfileEditStateCopyWithImpl(this._value, this._then);
+class _$UserEditStateCopyWithImpl<$Res>
+    implements $UserEditStateCopyWith<$Res> {
+  _$UserEditStateCopyWithImpl(this._value, this._then);
 
-  final ProfileEditState _value;
+  final UserEditState _value;
   // ignore: unused_field
-  final $Res Function(ProfileEditState) _then;
+  final $Res Function(UserEditState) _then;
 
   @override
   $Res call({
@@ -236,44 +262,44 @@ class _$ProfileEditStateCopyWithImpl<$Res>
       isProcessing:
           isProcessing == freezed ? _value.isProcessing : isProcessing as bool,
       error: error == freezed ? _value.error : error,
-      form: form == freezed ? _value.form : form as ProfileEditForm,
+      form: form == freezed ? _value.form : form as UserEditForm,
     ));
   }
 
   @override
-  $ProfileEditFormCopyWith<$Res> get form {
+  $UserEditFormCopyWith<$Res> get form {
     if (_value.form == null) {
       return null;
     }
-    return $ProfileEditFormCopyWith<$Res>(_value.form, (value) {
+    return $UserEditFormCopyWith<$Res>(_value.form, (value) {
       return _then(_value.copyWith(form: value));
     });
   }
 }
 
 /// @nodoc
-abstract class _$ProfileEditStateCopyWith<$Res>
-    implements $ProfileEditStateCopyWith<$Res> {
-  factory _$ProfileEditStateCopyWith(
-          _ProfileEditState value, $Res Function(_ProfileEditState) then) =
-      __$ProfileEditStateCopyWithImpl<$Res>;
+abstract class _$UserEditStateCopyWith<$Res>
+    implements $UserEditStateCopyWith<$Res> {
+  factory _$UserEditStateCopyWith(
+          _UserEditState value, $Res Function(_UserEditState) then) =
+      __$UserEditStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isProcessing, @nullable Object error, ProfileEditForm form});
+  $Res call({bool isProcessing, @nullable Object error, UserEditForm form});
 
   @override
-  $ProfileEditFormCopyWith<$Res> get form;
+  $UserEditFormCopyWith<$Res> get form;
 }
 
 /// @nodoc
-class __$ProfileEditStateCopyWithImpl<$Res>
-    extends _$ProfileEditStateCopyWithImpl<$Res>
-    implements _$ProfileEditStateCopyWith<$Res> {
-  __$ProfileEditStateCopyWithImpl(
-      _ProfileEditState _value, $Res Function(_ProfileEditState) _then)
-      : super(_value, (v) => _then(v as _ProfileEditState));
+class __$UserEditStateCopyWithImpl<$Res>
+    extends _$UserEditStateCopyWithImpl<$Res>
+    implements _$UserEditStateCopyWith<$Res> {
+  __$UserEditStateCopyWithImpl(
+      _UserEditState _value, $Res Function(_UserEditState) _then)
+      : super(_value, (v) => _then(v as _UserEditState));
 
   @override
-  _ProfileEditState get _value => super._value as _ProfileEditState;
+  _UserEditState get _value => super._value as _UserEditState;
 
   @override
   $Res call({
@@ -281,18 +307,18 @@ class __$ProfileEditStateCopyWithImpl<$Res>
     Object error = freezed,
     Object form = freezed,
   }) {
-    return _then(_ProfileEditState(
+    return _then(_UserEditState(
       isProcessing:
           isProcessing == freezed ? _value.isProcessing : isProcessing as bool,
       error: error == freezed ? _value.error : error,
-      form: form == freezed ? _value.form : form as ProfileEditForm,
+      form: form == freezed ? _value.form : form as UserEditForm,
     ));
   }
 }
 
 /// @nodoc
-class _$_ProfileEditState implements _ProfileEditState {
-  _$_ProfileEditState(
+class _$_UserEditState implements _UserEditState {
+  _$_UserEditState(
       {@required this.isProcessing, @nullable this.error, @required this.form})
       : assert(isProcessing != null),
         assert(form != null);
@@ -303,17 +329,17 @@ class _$_ProfileEditState implements _ProfileEditState {
   @nullable
   final Object error;
   @override
-  final ProfileEditForm form;
+  final UserEditForm form;
 
   @override
   String toString() {
-    return 'ProfileEditState(isProcessing: $isProcessing, error: $error, form: $form)';
+    return 'UserEditState(isProcessing: $isProcessing, error: $error, form: $form)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _ProfileEditState &&
+        (other is _UserEditState &&
             (identical(other.isProcessing, isProcessing) ||
                 const DeepCollectionEquality()
                     .equals(other.isProcessing, isProcessing)) &&
@@ -332,15 +358,15 @@ class _$_ProfileEditState implements _ProfileEditState {
 
   @JsonKey(ignore: true)
   @override
-  _$ProfileEditStateCopyWith<_ProfileEditState> get copyWith =>
-      __$ProfileEditStateCopyWithImpl<_ProfileEditState>(this, _$identity);
+  _$UserEditStateCopyWith<_UserEditState> get copyWith =>
+      __$UserEditStateCopyWithImpl<_UserEditState>(this, _$identity);
 }
 
-abstract class _ProfileEditState implements ProfileEditState {
-  factory _ProfileEditState(
+abstract class _UserEditState implements UserEditState {
+  factory _UserEditState(
       {@required bool isProcessing,
       @nullable Object error,
-      @required ProfileEditForm form}) = _$_ProfileEditState;
+      @required UserEditForm form}) = _$_UserEditState;
 
   @override
   bool get isProcessing;
@@ -348,8 +374,8 @@ abstract class _ProfileEditState implements ProfileEditState {
   @nullable
   Object get error;
   @override
-  ProfileEditForm get form;
+  UserEditForm get form;
   @override
   @JsonKey(ignore: true)
-  _$ProfileEditStateCopyWith<_ProfileEditState> get copyWith;
+  _$UserEditStateCopyWith<_UserEditState> get copyWith;
 }

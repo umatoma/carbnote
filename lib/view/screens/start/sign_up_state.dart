@@ -1,6 +1,7 @@
 // ignore_for_file: top_level_function_literal_block
 import 'dart:io';
 
+import 'package:carbnote/models/user_model.dart';
 import 'package:carbnote/view/providers.dart';
 import 'package:carbnote/view/screens/start/welcome_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -143,32 +144,39 @@ class SignUpStateNotifier extends StateNotifier<SignUpState> {
   Future<void> sumbitSignInSetting({bool skip = false}) async {
     state = state.copyWith(isProcessing: true);
     try {
-      final authRepo = read(authRepoProvider);
-      final authUser = skip
+      final authRepo = read(authUserRepoProvider);
+      final userRepo = read(userRepoProvider);
+
+      final isAnonymous = skip == true;
+      final authUser = isAnonymous
           ? await authRepo.signInAnonymously()
           : await authRepo.signUpWithEmailAndPassword(
               email: state.form.email,
               password: state.form.password,
             );
-      final imageURL = state.form.imageFile == null
-          ? 'https://placehold.jp/150x150.png'
-          : await authRepo.uploadUserImage(
-              userID: authUser.id,
-              file: state.form.imageFile,
-            );
-      await authRepo.updateCurrentUser(
-        nickname: state.form.nickname,
-        imageURL: imageURL,
-      );
 
-      final navKey = read(navKeyProvider);
-      await Navigator.of(navKey.currentState.context).pushAndRemoveUntil(
-        CupertinoPageRoute<void>(
-          builder: (_) => const WelcomeScreen(),
-          fullscreenDialog: true,
-        ),
-        (route) => false,
+      User user = User(
+        id: authUser.id,
+        nickname: state.form.nickname,
+        imageURL: 'https://placehold.jp/150x150.png',
+        goalCarbGram: state.form.goalCarbGram,
+        isAnonymous: isAnonymous,
+        updatedAt: DateTime.now(),
+        createdAt: DateTime.now(),
       );
+      if (state.form.imageFile != null) {
+        final imageURL = await userRepo.createImage(user, state.form.imageFile);
+        user = user.copyWith(imageURL: imageURL);
+      }
+      await userRepo.create(user);
+
+      await read(navKeyProvider).currentState.pushAndRemoveUntil(
+            CupertinoPageRoute<void>(
+              builder: (_) => const WelcomeScreen(),
+              fullscreenDialog: true,
+            ),
+            (route) => false,
+          );
     } catch (e, stackTrace) {
       setError(e, stackTrace);
       state = state.copyWith(isProcessing: false);

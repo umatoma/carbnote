@@ -1,4 +1,4 @@
-import 'package:carbnote/models/exception.dart';
+import 'package:carbnote/models/exception_model.dart';
 import 'package:carbnote/view/screens/start/sign_up_state.dart';
 import 'package:carbnote/view/widgets/animation.dart';
 import 'package:carbnote/view/widgets/button.dart';
@@ -169,6 +169,7 @@ class SetProfilePage extends HookWidget {
             CnImageField(
               onPressed: () =>
                   context.read(signUpStateProvider).pickImageFile(),
+              icon: CupertinoIcons.person,
               image: state.form.imageFile == null
                   ? null
                   : Image.file(

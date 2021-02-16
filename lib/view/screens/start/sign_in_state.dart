@@ -1,5 +1,4 @@
 import 'package:carbnote/view/providers.dart';
-import 'package:carbnote/view/screens/home/home_screen.dart';
 import 'package:carbnote/view/screens/start/welcome_back_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +48,7 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
   Future<void> signIn() async {
     state = state.copyWith(isProcessing: true);
     try {
-      await read(authRepoProvider).signInWithEmailAndPassword(
+      await read(authUserRepoProvider).signInWithEmailAndPassword(
         email: state.email,
         password: state.password,
       );
@@ -74,7 +73,7 @@ class SignInStateNotifier extends StateNotifier<SignInState> {
   Future<void> resetPassword() async {
     state = state.copyWith(isProcessing: true);
     try {
-      await read(authRepoProvider).sendPasswordResetEmail(state.email);
+      await read(authUserRepoProvider).sendPasswordResetEmail(state.email);
       state = state.copyWith(isProcessing: false);
     } catch (e, stackTrace) {
       print(e);

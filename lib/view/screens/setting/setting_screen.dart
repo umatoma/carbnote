@@ -57,7 +57,7 @@ class SettingScreen extends HookWidget {
             padding: const EdgeInsets.symmetric(horizontal: 32),
             child: CnSecondaryButton(
               onPressed: () async {
-                await context.read(authRepoProvider).signOut();
+                await context.read(authUserRepoProvider).signOut();
                 await Navigator.of(context).pushAndRemoveUntil(
                   CupertinoPageRoute<void>(
                     builder: (_) => const StartScreen(),

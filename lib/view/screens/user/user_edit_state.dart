@@ -6,37 +6,39 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/all.dart';
 import 'package:image_picker/image_picker.dart';
 
-part 'profile_edit_state.freezed.dart';
+part 'user_edit_state.freezed.dart';
 
-final profileEditStateProvider = StateNotifierProvider.autoDispose((ref) {
-  return ProfileEditStateNotifier(ref.read);
+final userEditStateProvider = StateNotifierProvider.autoDispose((ref) {
+  return UserEditStateNotifier(ref.read);
 });
 
 @freezed
-abstract class ProfileEditForm with _$ProfileEditForm {
-  factory ProfileEditForm({
+abstract class UserEditForm with _$UserEditForm {
+  factory UserEditForm({
     @required String nickname,
     @required String imageURL,
     @nullable File imageFile,
-  }) = _ProfileEditForm;
+    @required int goalCarbGram,
+  }) = _UserEditForm;
 }
 
 @freezed
-abstract class ProfileEditState with _$ProfileEditState {
-  factory ProfileEditState({
+abstract class UserEditState with _$UserEditState {
+  factory UserEditState({
     @required bool isProcessing,
     @nullable Object error,
-    @required ProfileEditForm form,
-  }) = _ProfileEditState;
+    @required UserEditForm form,
+  }) = _UserEditState;
 }
 
-class ProfileEditStateNotifier extends StateNotifier<ProfileEditState> {
-  ProfileEditStateNotifier(this.read)
-      : super(ProfileEditState(
+class UserEditStateNotifier extends StateNotifier<UserEditState> {
+  UserEditStateNotifier(this.read)
+      : super(UserEditState(
           isProcessing: false,
-          form: ProfileEditForm(
+          form: UserEditForm(
             nickname: read(currentUserProvider).nickname,
             imageURL: read(currentUserProvider).imageURL,
+            goalCarbGram: read(currentUserProvider).goalCarbGram,
           ),
         ));
 
@@ -60,24 +62,28 @@ class ProfileEditStateNotifier extends StateNotifier<ProfileEditState> {
     );
   }
 
+  void setGoalCarbGram(int value) {
+    state = state.copyWith(
+      form: state.form.copyWith(goalCarbGram: value),
+    );
+  }
+
   Future<void> submitForm() async {
     state = state.copyWith(isProcessing: true);
     try {
+      final userRepo = read(userRepoProvider);
       final user = read(currentUserProvider);
-      final authRepo = read(authRepoProvider);
+
       final imageURL = state.form.imageFile == null
           ? state.form.imageURL
-          : await authRepo.uploadUserImage(
-              userID: user.id,
-              file: state.form.imageFile,
-            );
-      await authRepo.updateCurrentUser(
+          : await userRepo.createImage(user, state.form.imageFile);
+      await userRepo.update(user.copyWith(
         nickname: state.form.nickname,
         imageURL: imageURL,
-      );
-      final navKey = read(navKeyProvider);
+      ));
+
       state = state.copyWith(isProcessing: false);
-      Navigator.of(navKey.currentState.context).pop();
+      read(navKeyProvider).currentState.pop();
     } catch (e, stackTrace) {
       setError(e, stackTrace);
       state = state.copyWith(isProcessing: false);

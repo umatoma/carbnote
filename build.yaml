@@ -5,6 +5,6 @@ targets:
         generate_for:
           include:
             - lib/**/*state.dart
-            - lib/models/*.dart
+            - lib/**/*model.dart
           exclude:
             - lib/**/*.freezed.dart

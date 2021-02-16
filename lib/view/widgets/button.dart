@@ -26,7 +26,7 @@ class CnPrimaryButton extends StatelessWidget {
                 Theme.of(context).primaryColorDark.withOpacity(0.5),
               ),
               foregroundColor: MaterialStateProperty.all(
-                onPressed == null ? Colors.grey : Colors.white,
+                onPressed == null ? Colors.white : Colors.white,
               ),
               backgroundColor: MaterialStateProperty.all(
                 onPressed == null

@@ -1,5 +1,6 @@
 import 'package:carbnote/view/providers.dart';
-import 'package:carbnote/view/screens/user/profile_edit_screen.dart';
+import 'package:carbnote/view/screens/user/user_edit_screen.dart';
+import 'package:carbnote/view/screens/user/auth_user_edit_screen.dart';
 import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/image.dart';
 import 'package:carbnote/view/widgets/nav_bar.dart';
@@ -14,6 +15,7 @@ class ProfileScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authUser = useProvider(authUserProvider);
     final user = useProvider(currentUserProvider);
 
     return CnScaffold(
@@ -42,7 +44,7 @@ class ProfileScreen extends HookWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            user?.email ?? 'ログイン情報未登録',
+            authUser?.email ?? 'ログイン情報未登録',
           ),
           const SizedBox(height: 32),
           Text(
@@ -66,7 +68,12 @@ class ProfileScreen extends HookWidget {
                 child: const Text('プロフィール設定'),
               ),
               CnSecondaryButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                  CupertinoPageRoute<void>(
+                    builder: (_) => const SignInEditScreen(),
+                    fullscreenDialog: true,
+                  ),
+                ),
                 child: const Text('ログイン設定'),
               ),
             ],
@@ -74,10 +81,7 @@ class ProfileScreen extends HookWidget {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(CupertinoIcons.add),
-      ),
+      floatingActionButton: const CnFavButton(),
       bottomNavigationBar: const CnBottomNav(index: 3),
     );
   }

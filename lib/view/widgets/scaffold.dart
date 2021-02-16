@@ -1,4 +1,6 @@
-import 'package:carbnote/view/screens/user/profile_screen.dart';
+import 'package:carbnote/view/screens/record/record_create_screen.dart';
+import 'package:carbnote/view/screens/user/user_screen.dart';
+import 'package:carbnote/view/widgets/nav_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -37,6 +39,23 @@ class CnScaffold extends StatelessWidget {
       floatingActionButton: floatingActionButton,
       floatingActionButtonLocation: floatingActionButtonLocation,
       bottomNavigationBar: bottomNavigationBar,
+    );
+  }
+}
+
+class CnFavButton extends StatelessWidget {
+  const CnFavButton() : super();
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () => Navigator.of(context).push(
+        CupertinoPageRoute<void>(
+          builder: (_) => const RecordCreateScreen(),
+          fullscreenDialog: true,
+        ),
+      ),
+      child: const Icon(CupertinoIcons.add),
     );
   }
 }

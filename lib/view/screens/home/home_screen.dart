@@ -35,10 +35,7 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(CupertinoIcons.add),
-      ),
+      floatingActionButton: const CnFavButton(),
       bottomNavigationBar: const CnBottomNav(index: 0),
     );
   }
@@ -49,14 +46,14 @@ class AuthUserRow extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final authUser = useProvider(currentUserProvider);
+    final user = useProvider(currentUserProvider);
 
     return Row(
       children: [
         Hero(
           tag: 'ProfileImage',
           child: CnProfileImage(
-            authUser?.imageURL,
+            user?.imageURL,
             size: 48,
           ),
         ),
@@ -67,10 +64,10 @@ class AuthUserRow extends HookWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                authUser == null ? '...' : 'Hi ${authUser.nickname}',
+                user == null ? '...' : 'Hi ${user.nickname}',
                 style: Theme.of(context).textTheme.headline6,
               ),
-              Text(authUser == null ? '...' : '今日は残り20gの糖質が取れるよ'),
+              Text(user == null ? '...' : '今日は残り20gの糖質が取れるよ'),
             ],
           ),
         ),

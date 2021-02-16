@@ -76,10 +76,12 @@ class CnTextField extends StatelessWidget {
 class CnImageField extends StatelessWidget {
   const CnImageField({
     @required this.onPressed,
+    @required this.icon,
     this.image,
   }) : super();
 
   final void Function() onPressed;
+  final IconData icon;
   final Widget image;
 
   @override
@@ -109,7 +111,7 @@ class CnImageField extends StatelessWidget {
                   child: image == null
                       ? Center(
                           child: Icon(
-                            CupertinoIcons.person,
+                            icon,
                             size: 32,
                             color: Theme.of(context).primaryColor,
                           ),
@@ -146,6 +148,114 @@ class CnImageField extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CnGramField extends StatefulWidget {
+  const CnGramField({
+    @required this.onChanged,
+    @required this.gram,
+  }) : super();
+
+  final void Function(int value) onChanged;
+  final int gram;
+
+  @override
+  _CnGramFieldState createState() => _CnGramFieldState();
+}
+
+class _CnGramFieldState extends State<CnGramField> {
+  final int _digits = 3;
+  List<FixedExtentScrollController> _controllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _controllers = widget.gram
+        .toString()
+        .padLeft(_digits, '0')
+        .split('')
+        .map((s) => int.tryParse(s) ?? 0)
+        .map((n) => FixedExtentScrollController(initialItem: n))
+        .toList();
+  }
+
+  @override
+  void dispose() {
+    for (final controller in _controllers) {
+      controller?.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final items = List.generate(10, (i) {
+      return Text(
+        '$i',
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
+        ),
+      );
+    }).toList();
+    return Container(
+      width: double.infinity,
+      height: 72,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey[300]),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        children: [
+          for (final controller in _controllers)
+            Expanded(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: _buildPicker(
+                  onSelectedItemChanged: (i) => _onSelectedItemChanged(),
+                  controller: controller,
+                  looping: true,
+                  children: items,
+                ),
+              ),
+            ),
+          Container(
+            width: 24,
+            height: 32,
+            color: Colors.grey[200],
+            child: const Center(
+              child: Text('g'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onSelectedItemChanged() {
+    final gramString = _controllers.map((c) => c.selectedItem % 10).join('');
+    final gram = int.tryParse(gramString) ?? 0;
+    widget.onChanged(gram);
+  }
+
+  Widget _buildPicker({
+    @required void Function(int i) onSelectedItemChanged,
+    @required FixedExtentScrollController controller,
+    @required bool looping,
+    @required List<Widget> children,
+  }) {
+    return CupertinoPicker(
+      onSelectedItemChanged: onSelectedItemChanged,
+      scrollController: controller,
+      itemExtent: 32,
+      looping: looping,
+      backgroundColor: Colors.white,
+      selectionOverlay: const CupertinoPickerDefaultSelectionOverlay(
+        capLeftEdge: false,
+        capRightEdge: false,
+      ),
+      children: children,
     );
   }
 }

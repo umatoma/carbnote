@@ -1,7 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies
 
-part of 'auth_user.dart';
+part of 'auth_user_model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -17,14 +17,10 @@ class _$AuthUserTearOff {
   _AuthUser call(
       {@required String id,
       @nullable String email,
-      @nullable String nickname,
-      @nullable String imageURL,
       @required bool isAnonymous}) {
     return _AuthUser(
       id: id,
       email: email,
-      nickname: nickname,
-      imageURL: imageURL,
       isAnonymous: isAnonymous,
     );
   }
@@ -39,10 +35,6 @@ mixin _$AuthUser {
   String get id;
   @nullable
   String get email;
-  @nullable
-  String get nickname;
-  @nullable
-  String get imageURL;
   bool get isAnonymous;
 
   @JsonKey(ignore: true)
@@ -53,12 +45,7 @@ mixin _$AuthUser {
 abstract class $AuthUserCopyWith<$Res> {
   factory $AuthUserCopyWith(AuthUser value, $Res Function(AuthUser) then) =
       _$AuthUserCopyWithImpl<$Res>;
-  $Res call(
-      {String id,
-      @nullable String email,
-      @nullable String nickname,
-      @nullable String imageURL,
-      bool isAnonymous});
+  $Res call({String id, @nullable String email, bool isAnonymous});
 }
 
 /// @nodoc
@@ -73,15 +60,11 @@ class _$AuthUserCopyWithImpl<$Res> implements $AuthUserCopyWith<$Res> {
   $Res call({
     Object id = freezed,
     Object email = freezed,
-    Object nickname = freezed,
-    Object imageURL = freezed,
     Object isAnonymous = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as String,
       email: email == freezed ? _value.email : email as String,
-      nickname: nickname == freezed ? _value.nickname : nickname as String,
-      imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
       isAnonymous:
           isAnonymous == freezed ? _value.isAnonymous : isAnonymous as bool,
     ));
@@ -93,12 +76,7 @@ abstract class _$AuthUserCopyWith<$Res> implements $AuthUserCopyWith<$Res> {
   factory _$AuthUserCopyWith(_AuthUser value, $Res Function(_AuthUser) then) =
       __$AuthUserCopyWithImpl<$Res>;
   @override
-  $Res call(
-      {String id,
-      @nullable String email,
-      @nullable String nickname,
-      @nullable String imageURL,
-      bool isAnonymous});
+  $Res call({String id, @nullable String email, bool isAnonymous});
 }
 
 /// @nodoc
@@ -114,15 +92,11 @@ class __$AuthUserCopyWithImpl<$Res> extends _$AuthUserCopyWithImpl<$Res>
   $Res call({
     Object id = freezed,
     Object email = freezed,
-    Object nickname = freezed,
-    Object imageURL = freezed,
     Object isAnonymous = freezed,
   }) {
     return _then(_AuthUser(
       id: id == freezed ? _value.id : id as String,
       email: email == freezed ? _value.email : email as String,
-      nickname: nickname == freezed ? _value.nickname : nickname as String,
-      imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
       isAnonymous:
           isAnonymous == freezed ? _value.isAnonymous : isAnonymous as bool,
     ));
@@ -132,11 +106,7 @@ class __$AuthUserCopyWithImpl<$Res> extends _$AuthUserCopyWithImpl<$Res>
 /// @nodoc
 class _$_AuthUser implements _AuthUser {
   const _$_AuthUser(
-      {@required this.id,
-      @nullable this.email,
-      @nullable this.nickname,
-      @nullable this.imageURL,
-      @required this.isAnonymous})
+      {@required this.id, @nullable this.email, @required this.isAnonymous})
       : assert(id != null),
         assert(isAnonymous != null);
 
@@ -146,17 +116,11 @@ class _$_AuthUser implements _AuthUser {
   @nullable
   final String email;
   @override
-  @nullable
-  final String nickname;
-  @override
-  @nullable
-  final String imageURL;
-  @override
   final bool isAnonymous;
 
   @override
   String toString() {
-    return 'AuthUser(id: $id, email: $email, nickname: $nickname, imageURL: $imageURL, isAnonymous: $isAnonymous)';
+    return 'AuthUser(id: $id, email: $email, isAnonymous: $isAnonymous)';
   }
 
   @override
@@ -167,12 +131,6 @@ class _$_AuthUser implements _AuthUser {
                 const DeepCollectionEquality().equals(other.id, id)) &&
             (identical(other.email, email) ||
                 const DeepCollectionEquality().equals(other.email, email)) &&
-            (identical(other.nickname, nickname) ||
-                const DeepCollectionEquality()
-                    .equals(other.nickname, nickname)) &&
-            (identical(other.imageURL, imageURL) ||
-                const DeepCollectionEquality()
-                    .equals(other.imageURL, imageURL)) &&
             (identical(other.isAnonymous, isAnonymous) ||
                 const DeepCollectionEquality()
                     .equals(other.isAnonymous, isAnonymous)));
@@ -183,8 +141,6 @@ class _$_AuthUser implements _AuthUser {
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(id) ^
       const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(nickname) ^
-      const DeepCollectionEquality().hash(imageURL) ^
       const DeepCollectionEquality().hash(isAnonymous);
 
   @JsonKey(ignore: true)
@@ -197,8 +153,6 @@ abstract class _AuthUser implements AuthUser {
   const factory _AuthUser(
       {@required String id,
       @nullable String email,
-      @nullable String nickname,
-      @nullable String imageURL,
       @required bool isAnonymous}) = _$_AuthUser;
 
   @override
@@ -206,12 +160,6 @@ abstract class _AuthUser implements AuthUser {
   @override
   @nullable
   String get email;
-  @override
-  @nullable
-  String get nickname;
-  @override
-  @nullable
-  String get imageURL;
   @override
   bool get isAnonymous;
   @override

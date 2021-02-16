@@ -1,10 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carbnote/view/screens/user/profile_edit_state.dart';
+import 'package:carbnote/view/screens/user/user_edit_state.dart';
 import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/container.dart';
 import 'package:carbnote/view/widgets/form.dart';
 import 'package:carbnote/view/widgets/nav_bar.dart';
 import 'package:carbnote/view/widgets/scaffold.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/all.dart';
@@ -14,7 +15,8 @@ class ProfileEditScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final state = useProvider(profileEditStateProvider.state);
+    final grams = [70, 100, 130];
+    final state = useProvider(userEditStateProvider.state);
 
     return CnProgressContainer(
       isProgressing: state.isProcessing,
@@ -34,7 +36,8 @@ class ProfileEditScreen extends HookWidget {
                 tag: 'ProfileImage',
                 child: CnImageField(
                   onPressed: () =>
-                      context.read(profileEditStateProvider).pickImageFile(),
+                      context.read(userEditStateProvider).pickImageFile(),
+                  icon: CupertinoIcons.person,
                   image: state.form.imageFile == null
                       ? CachedNetworkImage(imageUrl: state.form.imageURL)
                       : Image.file(state.form.imageFile),
@@ -46,7 +49,7 @@ class ProfileEditScreen extends HookWidget {
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: CnTextField(
                 onChanged: (value) =>
-                    context.read(profileEditStateProvider).setNickname(value),
+                    context.read(userEditStateProvider).setNickname(value),
                 initialValue: state.form.nickname,
               ),
             ),
@@ -62,26 +65,18 @@ class ProfileEditScreen extends HookWidget {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      Expanded(
-                        child: CnSecondaryButton(
-                          onPressed: () {},
-                          child: const Text('70g'),
+                      for (final gram in grams) ...[
+                        Expanded(
+                          child: CnSecondaryButton(
+                            onPressed: () => context
+                                .read(userEditStateProvider)
+                                .setGoalCarbGram(gram),
+                            selected: state.form.goalCarbGram == gram,
+                            child: Text('${gram}g'),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: CnSecondaryButton(
-                          onPressed: () {},
-                          child: const Text('100g'),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: CnSecondaryButton(
-                          onPressed: () {},
-                          child: const Text('130g'),
-                        ),
-                      ),
+                        if (gram != grams.last) const SizedBox(width: 8),
+                      ],
                     ],
                   ),
                 ],
@@ -105,8 +100,8 @@ class ProfileEditScreen extends HookWidget {
               children: [
                 CnPrimaryButton(
                   onPressed: () =>
-                      context.read(profileEditStateProvider).submitForm(),
-                  child: const Text('OK'),
+                      context.read(userEditStateProvider).submitForm(),
+                  child: const Text('登録'),
                 ),
               ],
             ),
