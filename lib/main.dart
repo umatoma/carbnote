@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/all.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:carbnote/view/app.dart';
+import 'package:jiffy/jiffy.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +18,7 @@ Future<void> main() async {
   ]);
   Intl.defaultLocale = 'ja';
   await initializeDateFormatting(Intl.defaultLocale);
+  await Jiffy.locale(Intl.defaultLocale);
   await Firebase.initializeApp();
 
   if (kDebugMode) {

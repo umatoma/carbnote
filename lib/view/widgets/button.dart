@@ -1,4 +1,35 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+class CnIconButton extends StatelessWidget {
+  const CnIconButton({
+    Key key,
+    @required this.onPressed,
+    this.padding = const EdgeInsets.all(8),
+    this.iconSize = 24,
+    @required this.icon,
+  }) : super(key: key);
+
+  final void Function() onPressed;
+  final EdgeInsetsGeometry padding;
+  final double iconSize;
+  final Widget icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: onPressed,
+      padding: padding,
+      constraints: const BoxConstraints(
+        minWidth: 32,
+        minHeight: 32,
+      ),
+      color: Theme.of(context).primaryColor,
+      iconSize: iconSize,
+      icon: icon,
+    );
+  }
+}
 
 class CnPrimaryButton extends StatelessWidget {
   const CnPrimaryButton({

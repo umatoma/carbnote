@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'record_model.freezed.dart';
@@ -23,4 +25,34 @@ abstract class Record with _$Record {
     @required DateTime updatedAt,
     @required DateTime createdAt,
   }) = _Record;
+}
+
+@freezed
+abstract class RecordsSummary implements _$RecordsSummary {
+  factory RecordsSummary({
+    @required int goalCarbGram,
+    @required List<Record> records,
+  }) = _RecordsSummary;
+
+  RecordsSummary._();
+
+  @late
+  int get totalCarbGram =>
+      records.map((record) => record.carbGram).fold(0, (a, b) => a + b);
+
+  @late
+  int get remainGram => goalCarbGram - totalCarbGram;
+
+  @late
+  int get maxByTotalAndGoalCarbGram => max(totalCarbGram, goalCarbGram);
+
+  @late
+  bool get isOverGoalCarbGram => totalCarbGram > goalCarbGram;
+
+  int getTotalCarbGramByTimeType(RecordTimeType timeType) {
+    return records
+        .where((record) => record.timeType == timeType)
+        .map((record) => record.carbGram)
+        .fold(0, (a, b) => a + b);
+  }
 }

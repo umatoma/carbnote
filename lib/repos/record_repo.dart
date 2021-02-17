@@ -15,6 +15,22 @@ class RecordRepo {
     return docToRecord(doc);
   }
 
+  Stream<List<Record>> getListByRcordedAtStream(
+    String userID,
+    DateTime recordedAtFrom,
+    DateTime recordedAtTo,
+  ) {
+    return firestore
+        .collection('users')
+        .doc(userID)
+        .collection('records')
+        .where('recordedAt', isGreaterThanOrEqualTo: recordedAtFrom)
+        .where('recordedAt', isLessThanOrEqualTo: recordedAtTo)
+        .orderBy('recordedAt', descending: true)
+        .snapshots()
+        .map((query) => query.docs.map((doc) => docToRecord(doc)).toList());
+  }
+
   Future<Record> create(Record record) async {
     final ref = firestore
         .collection('users')

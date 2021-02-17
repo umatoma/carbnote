@@ -319,3 +319,198 @@ abstract class _Record implements Record {
   @JsonKey(ignore: true)
   _$RecordCopyWith<_Record> get copyWith;
 }
+
+/// @nodoc
+class _$RecordsSummaryTearOff {
+  const _$RecordsSummaryTearOff();
+
+// ignore: unused_element
+  _RecordsSummary call(
+      {@required int goalCarbGram, @required List<Record> records}) {
+    return _RecordsSummary(
+      goalCarbGram: goalCarbGram,
+      records: records,
+    );
+  }
+}
+
+/// @nodoc
+// ignore: unused_element
+const $RecordsSummary = _$RecordsSummaryTearOff();
+
+/// @nodoc
+mixin _$RecordsSummary {
+  int get goalCarbGram;
+  List<Record> get records;
+
+  @JsonKey(ignore: true)
+  $RecordsSummaryCopyWith<RecordsSummary> get copyWith;
+}
+
+/// @nodoc
+abstract class $RecordsSummaryCopyWith<$Res> {
+  factory $RecordsSummaryCopyWith(
+          RecordsSummary value, $Res Function(RecordsSummary) then) =
+      _$RecordsSummaryCopyWithImpl<$Res>;
+  $Res call({int goalCarbGram, List<Record> records});
+}
+
+/// @nodoc
+class _$RecordsSummaryCopyWithImpl<$Res>
+    implements $RecordsSummaryCopyWith<$Res> {
+  _$RecordsSummaryCopyWithImpl(this._value, this._then);
+
+  final RecordsSummary _value;
+  // ignore: unused_field
+  final $Res Function(RecordsSummary) _then;
+
+  @override
+  $Res call({
+    Object goalCarbGram = freezed,
+    Object records = freezed,
+  }) {
+    return _then(_value.copyWith(
+      goalCarbGram:
+          goalCarbGram == freezed ? _value.goalCarbGram : goalCarbGram as int,
+      records: records == freezed ? _value.records : records as List<Record>,
+    ));
+  }
+}
+
+/// @nodoc
+abstract class _$RecordsSummaryCopyWith<$Res>
+    implements $RecordsSummaryCopyWith<$Res> {
+  factory _$RecordsSummaryCopyWith(
+          _RecordsSummary value, $Res Function(_RecordsSummary) then) =
+      __$RecordsSummaryCopyWithImpl<$Res>;
+  @override
+  $Res call({int goalCarbGram, List<Record> records});
+}
+
+/// @nodoc
+class __$RecordsSummaryCopyWithImpl<$Res>
+    extends _$RecordsSummaryCopyWithImpl<$Res>
+    implements _$RecordsSummaryCopyWith<$Res> {
+  __$RecordsSummaryCopyWithImpl(
+      _RecordsSummary _value, $Res Function(_RecordsSummary) _then)
+      : super(_value, (v) => _then(v as _RecordsSummary));
+
+  @override
+  _RecordsSummary get _value => super._value as _RecordsSummary;
+
+  @override
+  $Res call({
+    Object goalCarbGram = freezed,
+    Object records = freezed,
+  }) {
+    return _then(_RecordsSummary(
+      goalCarbGram:
+          goalCarbGram == freezed ? _value.goalCarbGram : goalCarbGram as int,
+      records: records == freezed ? _value.records : records as List<Record>,
+    ));
+  }
+}
+
+/// @nodoc
+class _$_RecordsSummary extends _RecordsSummary {
+  _$_RecordsSummary({@required this.goalCarbGram, @required this.records})
+      : assert(goalCarbGram != null),
+        assert(records != null),
+        super._();
+
+  @override
+  final int goalCarbGram;
+  @override
+  final List<Record> records;
+
+  bool _didtotalCarbGram = false;
+  int _totalCarbGram;
+
+  @override
+  int get totalCarbGram {
+    if (_didtotalCarbGram == false) {
+      _didtotalCarbGram = true;
+      _totalCarbGram =
+          records.map((record) => record.carbGram).fold(0, (a, b) => a + b);
+    }
+    return _totalCarbGram;
+  }
+
+  bool _didremainGram = false;
+  int _remainGram;
+
+  @override
+  int get remainGram {
+    if (_didremainGram == false) {
+      _didremainGram = true;
+      _remainGram = goalCarbGram - totalCarbGram;
+    }
+    return _remainGram;
+  }
+
+  bool _didmaxByTotalAndGoalCarbGram = false;
+  int _maxByTotalAndGoalCarbGram;
+
+  @override
+  int get maxByTotalAndGoalCarbGram {
+    if (_didmaxByTotalAndGoalCarbGram == false) {
+      _didmaxByTotalAndGoalCarbGram = true;
+      _maxByTotalAndGoalCarbGram = max(totalCarbGram, goalCarbGram);
+    }
+    return _maxByTotalAndGoalCarbGram;
+  }
+
+  bool _didisOverGoalCarbGram = false;
+  bool _isOverGoalCarbGram;
+
+  @override
+  bool get isOverGoalCarbGram {
+    if (_didisOverGoalCarbGram == false) {
+      _didisOverGoalCarbGram = true;
+      _isOverGoalCarbGram = totalCarbGram > goalCarbGram;
+    }
+    return _isOverGoalCarbGram;
+  }
+
+  @override
+  String toString() {
+    return 'RecordsSummary(goalCarbGram: $goalCarbGram, records: $records, totalCarbGram: $totalCarbGram, remainGram: $remainGram, maxByTotalAndGoalCarbGram: $maxByTotalAndGoalCarbGram, isOverGoalCarbGram: $isOverGoalCarbGram)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _RecordsSummary &&
+            (identical(other.goalCarbGram, goalCarbGram) ||
+                const DeepCollectionEquality()
+                    .equals(other.goalCarbGram, goalCarbGram)) &&
+            (identical(other.records, records) ||
+                const DeepCollectionEquality().equals(other.records, records)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(goalCarbGram) ^
+      const DeepCollectionEquality().hash(records);
+
+  @JsonKey(ignore: true)
+  @override
+  _$RecordsSummaryCopyWith<_RecordsSummary> get copyWith =>
+      __$RecordsSummaryCopyWithImpl<_RecordsSummary>(this, _$identity);
+}
+
+abstract class _RecordsSummary extends RecordsSummary {
+  _RecordsSummary._() : super._();
+  factory _RecordsSummary(
+      {@required int goalCarbGram,
+      @required List<Record> records}) = _$_RecordsSummary;
+
+  @override
+  int get goalCarbGram;
+  @override
+  List<Record> get records;
+  @override
+  @JsonKey(ignore: true)
+  _$RecordsSummaryCopyWith<_RecordsSummary> get copyWith;
+}

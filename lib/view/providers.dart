@@ -1,10 +1,13 @@
 // ignore_for_file: top_level_function_literal_block
+import 'package:carbnote/models/record_model.dart';
 import 'package:carbnote/repos/auth_user_repo.dart';
 import 'package:carbnote/repos/record_repo.dart';
 import 'package:carbnote/repos/user_repo.dart';
 import 'package:carbnote/view/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:tuple/tuple.dart';
 
 // ---------- Repository ---------- //
 
@@ -12,7 +15,7 @@ final authUserRepoProvider = Provider((ref) => AuthUserRepo());
 final userRepoProvider = Provider((ref) => UserRepo());
 final recordRepoProvider = Provider((ref) => RecordRepo());
 
-// ---------- Model ---------- //
+// ---------- AuthUser ---------- //
 
 final authUserStreamProvider = StreamProvider.autoDispose((ref) {
   return ref.read(authUserRepoProvider).onCurrentChanges();
@@ -20,6 +23,9 @@ final authUserStreamProvider = StreamProvider.autoDispose((ref) {
 final authUserProvider = Provider.autoDispose((ref) {
   return ref.watch(authUserStreamProvider).data?.value;
 });
+
+// ---------- User ---------- //
+
 final currentUserStreamProvider = StreamProvider.autoDispose((ref) {
   final authUser = ref.watch(authUserProvider);
   return authUser == null

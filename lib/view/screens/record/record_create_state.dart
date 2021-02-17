@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:carbnote/models/auth_user_model.dart';
 import 'package:carbnote/models/record_model.dart';
 import 'package:carbnote/models/user_model.dart';
 import 'package:carbnote/view/providers.dart';
