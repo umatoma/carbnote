@@ -3,7 +3,7 @@ import 'package:carbnote/view/screens/start/welcome_back_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 part 'sign_in_state.freezed.dart';
 

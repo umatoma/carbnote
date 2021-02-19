@@ -45,6 +45,18 @@ class RecordRepo {
     return await getOne(ref.id, record.userID);
   }
 
+  Future<Record> update(Record record) async {
+    final ref = firestore
+        .collection('users')
+        .doc(record.userID)
+        .collection('records')
+        .doc(record.id);
+    await ref.update(recordToData(record.copyWith(
+      updatedAt: DateTime.now(),
+    )));
+    return await getOne(ref.id, record.userID);
+  }
+
   RecordTimeType stringToTimeType(String value) {
     switch (value) {
       case 'breakfast':
@@ -80,8 +92,8 @@ class RecordRepo {
       timeType: stringToTimeType(doc['timeType'] as String),
       name: doc['name'] as String,
       imageURL: doc['imageURL'] as String,
-      intakeGram: doc['intakeGram'] as int,
       carbGram: doc['carbGram'] as int,
+      note: doc['note'] as String,
       recordedAt: (doc['recordedAt'] as Timestamp).toDate(),
       updatedAt: (doc['updatedAt'] as Timestamp).toDate(),
       createdAt: (doc['createdAt'] as Timestamp).toDate(),
@@ -95,8 +107,8 @@ class RecordRepo {
       'timeType': timeTypeToString(value.timeType),
       'name': value.name,
       'imageURL': value.imageURL,
-      'intakeGram': value.intakeGram,
       'carbGram': value.carbGram,
+      'note': value.note,
       'recordedAt': Timestamp.fromDate(value.recordedAt),
       'updatedAt': Timestamp.fromDate(value.updatedAt),
       'createdAt': Timestamp.fromDate(value.createdAt),

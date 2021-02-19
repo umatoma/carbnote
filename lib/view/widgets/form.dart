@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carbnote/view/widgets/image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +15,7 @@ class CnTextField extends StatelessWidget {
     this.obscureText = false,
     this.hintText,
     this.prefixIcon = CupertinoIcons.pencil,
+    this.maxLength = 128,
   }) : super(key: key);
 
   final void Function(String value) onChanged;
@@ -20,6 +25,7 @@ class CnTextField extends StatelessWidget {
   final bool obscureText;
   final String hintText;
   final IconData prefixIcon;
+  final int maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +49,7 @@ class CnTextField extends StatelessWidget {
           obscureText: obscureText,
           cursorWidth: 1,
           maxLines: 1,
-          maxLength: 128,
+          maxLength: maxLength,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(bottom: 4),
             counterText: '',
@@ -79,6 +85,19 @@ class CnImageField extends StatelessWidget {
     @required this.icon,
     this.image,
   }) : super();
+
+  CnImageField.fileOrURL({
+    @required this.onPressed,
+    @required this.icon,
+    @required String imageURL,
+    File imageFile,
+  })  : image = imageFile == null
+            ? CachedNetworkImage(
+                placeholder: (_, __) => Image.memory(kTransparentImage),
+                imageUrl: imageURL,
+              )
+            : Image.file(imageFile),
+        super();
 
   final void Function() onPressed;
   final IconData icon;

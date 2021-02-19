@@ -1,25 +1,32 @@
 // ignore_for_file: top_level_function_literal_block
 import 'dart:async';
 
+import 'package:carbnote/libs/date_time.dart';
 import 'package:carbnote/models/record_model.dart';
 import 'package:carbnote/view/providers.dart';
-import 'package:hooks_riverpod/all.dart';
-import 'package:jiffy/jiffy.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-final recordedAtProvider = StateProvider((ref) {
-  return DateTime.now();
+part 'home_state.freezed.dart';
+
+final homeStateProvider = StateNotifierProvider((ref) {
+  return HomeStateController();
+});
+
+final recordedAtProvider = Provider.autoDispose((ref) {
+  return ref.watch(homeStateProvider.state).recordedAt;
 });
 
 final recordsProvider = StreamProvider.autoDispose((ref) {
   final recordRepo = ref.read(recordRepoProvider);
   final user = ref.watch(currentUserProvider);
-  final recordedAt = ref.watch(recordedAtProvider).state;
+  final recordedAt = ref.watch(recordedAtProvider);
   final stream = user == null
       ? Stream.value(<Record>[])
       : recordRepo.getListByRcordedAtStream(
           user.id,
-          Jiffy(recordedAt).startOf(Units.DAY),
-          Jiffy(recordedAt).endOf(Units.DAY),
+          recordedAt.startOfDay(),
+          recordedAt.endOfDay(),
         );
   return stream;
 });
@@ -39,3 +46,21 @@ final recordsSummaryProvider = Provider.autoDispose((ref) {
         records: data,
       ));
 });
+
+@freezed
+abstract class HomeState with _$HomeState {
+  factory HomeState({
+    @required DateTime recordedAt,
+  }) = _HomeState;
+}
+
+class HomeStateController extends StateNotifier<HomeState> {
+  HomeStateController()
+      : super(HomeState(
+          recordedAt: DateTime.now(),
+        ));
+
+  void setRecordedAt(DateTime value) {
+    state = state.copyWith(recordedAt: value);
+  }
+}

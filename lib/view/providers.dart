@@ -1,13 +1,10 @@
 // ignore_for_file: top_level_function_literal_block
-import 'package:carbnote/models/record_model.dart';
 import 'package:carbnote/repos/auth_user_repo.dart';
 import 'package:carbnote/repos/record_repo.dart';
 import 'package:carbnote/repos/user_repo.dart';
 import 'package:carbnote/view/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:jiffy/jiffy.dart';
-import 'package:tuple/tuple.dart';
 
 // ---------- Repository ---------- //
 

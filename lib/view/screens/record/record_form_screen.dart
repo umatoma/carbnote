@@ -1,5 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carbnote/models/record_model.dart';
-import 'package:carbnote/view/screens/record/record_create_state.dart';
+import 'package:carbnote/view/screens/record/record_form_state.dart';
 import 'package:carbnote/view/strings.dart';
 import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/container.dart';
@@ -9,16 +10,17 @@ import 'package:carbnote/view/widgets/scaffold.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:intl/intl.dart';
 
-class RecordCreateScreen extends HookWidget {
-  const RecordCreateScreen() : super();
+class RecordFormScreen extends HookWidget {
+  const RecordFormScreen() : super();
 
   @override
   Widget build(BuildContext context) {
     const timeTypes = RecordTimeType.values;
-    final state = useProvider(recordCreateStateProvider.state);
+    final currentRecord = useProvider(currentRecordProvider);
+    final state = useProvider(recordFormStateProvider(currentRecord).state);
 
     return CnProgressContainer(
       isProgressing: state.isProcessing,
@@ -28,7 +30,7 @@ class RecordCreateScreen extends HookWidget {
             onPressed: () => Navigator.of(context).pop(),
           ),
           middle: Text(
-            DateFormat('MM月dd日').format(state.form.recordedAt),
+            DateFormat('MM月dd日').format(state.record.recordedAt),
           ),
         ),
         body: Column(
@@ -37,14 +39,14 @@ class RecordCreateScreen extends HookWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Hero(
-                tag: 'RecordImage',
-                child: CnImageField(
-                  onPressed: () =>
-                      context.read(recordCreateStateProvider).pickImageFile(),
+                tag: 'RecordImage_${state.record.id}',
+                child: CnImageField.fileOrURL(
+                  onPressed: () => context
+                      .read(recordFormStateProvider(currentRecord))
+                      .pickImageFile(),
                   icon: CupertinoIcons.photo,
-                  image: state.form.imageFile == null
-                      ? null
-                      : Image.file(state.form.imageFile),
+                  imageURL: state.record.imageURL,
+                  imageFile: state.imageFile,
                 ),
               ),
             ),
@@ -52,42 +54,24 @@ class RecordCreateScreen extends HookWidget {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: CnTextField(
-                onChanged: (value) =>
-                    context.read(recordCreateStateProvider).setName(value),
-                initialValue: state.form.name,
+                onChanged: (value) => context
+                    .read(recordFormStateProvider(currentRecord))
+                    .setName(value),
+                initialValue: state.record.name,
                 hintText: '名前',
+                prefixIcon: CupertinoIcons.pencil,
               ),
             ),
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 32),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Center(
-                      child: Text(
-                        '食べた量',
-                        style: Theme.of(context).textTheme.caption,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    flex: 2,
-                    child: CnGramField(
-                      onChanged: (value) => context
-                          .read(recordCreateStateProvider)
-                          .setIntakeGram(value),
-                      gram: state.form.intakeGram,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  const Expanded(
-                    flex: 1,
-                    child: SizedBox(),
-                  ),
-                ],
+              child: CnTextField(
+                onChanged: (value) => context
+                    .read(recordFormStateProvider(currentRecord))
+                    .setNote(value),
+                initialValue: state.record.note,
+                hintText: 'メモ',
+                prefixIcon: CupertinoIcons.pencil,
               ),
             ),
             const SizedBox(height: 16),
@@ -109,9 +93,9 @@ class RecordCreateScreen extends HookWidget {
                     flex: 2,
                     child: CnGramField(
                       onChanged: (value) => context
-                          .read(recordCreateStateProvider)
+                          .read(recordFormStateProvider(currentRecord))
                           .setCarbGram(value),
-                      gram: state.form.carbGram,
+                      gram: state.record.carbGram,
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -131,9 +115,9 @@ class RecordCreateScreen extends HookWidget {
                     Expanded(
                       child: CnSecondaryButton(
                         onPressed: () => context
-                            .read(recordCreateStateProvider)
+                            .read(recordFormStateProvider(currentRecord))
                             .setTimeType(type),
-                        selected: type == state.form.timeType,
+                        selected: type == state.record.timeType,
                         child: Text(CnStr.recordTimeType(type)),
                       ),
                     ),
@@ -160,8 +144,9 @@ class RecordCreateScreen extends HookWidget {
               children: [
                 CnPrimaryButton(
                   onPressed: state.canSubmitForm
-                      ? () =>
-                          context.read(recordCreateStateProvider).submitForm()
+                      ? () => context
+                          .read(recordFormStateProvider(currentRecord))
+                          .submitForm()
                       : null,
                   child: const Text('登録'),
                 ),

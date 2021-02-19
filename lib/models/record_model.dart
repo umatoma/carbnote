@@ -19,11 +19,11 @@ abstract class Record with _$Record {
     @required RecordTimeType timeType,
     @required String name,
     @required String imageURL,
-    @required int intakeGram,
     @required int carbGram,
+    @required String note,
     @required DateTime recordedAt,
-    @required DateTime updatedAt,
-    @required DateTime createdAt,
+    @nullable DateTime updatedAt,
+    @nullable DateTime createdAt,
   }) = _Record;
 }
 

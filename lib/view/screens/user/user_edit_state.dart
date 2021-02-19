@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:carbnote/view/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:hooks_riverpod/all.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 part 'user_edit_state.freezed.dart';

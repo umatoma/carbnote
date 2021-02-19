@@ -15,10 +15,10 @@
                     "id": "...",
                     "userID": "...",
                     "timeType": "breakfast|lunch|dinner|snack",
-                    "name": "",
-                    "imageURL": "",
-                    "intakeGram": 100,
+                    "name": "カレーライス",
+                    "imageURL": "https://exmaple.com/path/to/image",
                     "carbGram": 50,
+                    "note": "ABC店のカレーライス",
                     "recordedAt": "Timestamp",
                     "createdAt": "Timestamp",
                     "updatedAt": "Timestamp"

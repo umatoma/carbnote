@@ -20,19 +20,19 @@ class _$RecordTearOff {
       @required RecordTimeType timeType,
       @required String name,
       @required String imageURL,
-      @required int intakeGram,
       @required int carbGram,
+      @required String note,
       @required DateTime recordedAt,
-      @required DateTime updatedAt,
-      @required DateTime createdAt}) {
+      @nullable DateTime updatedAt,
+      @nullable DateTime createdAt}) {
     return _Record(
       id: id,
       userID: userID,
       timeType: timeType,
       name: name,
       imageURL: imageURL,
-      intakeGram: intakeGram,
       carbGram: carbGram,
+      note: note,
       recordedAt: recordedAt,
       updatedAt: updatedAt,
       createdAt: createdAt,
@@ -52,10 +52,12 @@ mixin _$Record {
   RecordTimeType get timeType;
   String get name;
   String get imageURL;
-  int get intakeGram;
   int get carbGram;
+  String get note;
   DateTime get recordedAt;
+  @nullable
   DateTime get updatedAt;
+  @nullable
   DateTime get createdAt;
 
   @JsonKey(ignore: true)
@@ -72,11 +74,11 @@ abstract class $RecordCopyWith<$Res> {
       RecordTimeType timeType,
       String name,
       String imageURL,
-      int intakeGram,
       int carbGram,
+      String note,
       DateTime recordedAt,
-      DateTime updatedAt,
-      DateTime createdAt});
+      @nullable DateTime updatedAt,
+      @nullable DateTime createdAt});
 }
 
 /// @nodoc
@@ -94,8 +96,8 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
     Object timeType = freezed,
     Object name = freezed,
     Object imageURL = freezed,
-    Object intakeGram = freezed,
     Object carbGram = freezed,
+    Object note = freezed,
     Object recordedAt = freezed,
     Object updatedAt = freezed,
     Object createdAt = freezed,
@@ -107,8 +109,8 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
           timeType == freezed ? _value.timeType : timeType as RecordTimeType,
       name: name == freezed ? _value.name : name as String,
       imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
-      intakeGram: intakeGram == freezed ? _value.intakeGram : intakeGram as int,
       carbGram: carbGram == freezed ? _value.carbGram : carbGram as int,
+      note: note == freezed ? _value.note : note as String,
       recordedAt:
           recordedAt == freezed ? _value.recordedAt : recordedAt as DateTime,
       updatedAt:
@@ -130,11 +132,11 @@ abstract class _$RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       RecordTimeType timeType,
       String name,
       String imageURL,
-      int intakeGram,
       int carbGram,
+      String note,
       DateTime recordedAt,
-      DateTime updatedAt,
-      DateTime createdAt});
+      @nullable DateTime updatedAt,
+      @nullable DateTime createdAt});
 }
 
 /// @nodoc
@@ -153,8 +155,8 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
     Object timeType = freezed,
     Object name = freezed,
     Object imageURL = freezed,
-    Object intakeGram = freezed,
     Object carbGram = freezed,
+    Object note = freezed,
     Object recordedAt = freezed,
     Object updatedAt = freezed,
     Object createdAt = freezed,
@@ -166,8 +168,8 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
           timeType == freezed ? _value.timeType : timeType as RecordTimeType,
       name: name == freezed ? _value.name : name as String,
       imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
-      intakeGram: intakeGram == freezed ? _value.intakeGram : intakeGram as int,
       carbGram: carbGram == freezed ? _value.carbGram : carbGram as int,
+      note: note == freezed ? _value.note : note as String,
       recordedAt:
           recordedAt == freezed ? _value.recordedAt : recordedAt as DateTime,
       updatedAt:
@@ -186,20 +188,18 @@ class _$_Record implements _Record {
       @required this.timeType,
       @required this.name,
       @required this.imageURL,
-      @required this.intakeGram,
       @required this.carbGram,
+      @required this.note,
       @required this.recordedAt,
-      @required this.updatedAt,
-      @required this.createdAt})
+      @nullable this.updatedAt,
+      @nullable this.createdAt})
       : assert(userID != null),
         assert(timeType != null),
         assert(name != null),
         assert(imageURL != null),
-        assert(intakeGram != null),
         assert(carbGram != null),
-        assert(recordedAt != null),
-        assert(updatedAt != null),
-        assert(createdAt != null);
+        assert(note != null),
+        assert(recordedAt != null);
 
   @override
   @nullable
@@ -213,19 +213,21 @@ class _$_Record implements _Record {
   @override
   final String imageURL;
   @override
-  final int intakeGram;
-  @override
   final int carbGram;
+  @override
+  final String note;
   @override
   final DateTime recordedAt;
   @override
+  @nullable
   final DateTime updatedAt;
   @override
+  @nullable
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Record(id: $id, userID: $userID, timeType: $timeType, name: $name, imageURL: $imageURL, intakeGram: $intakeGram, carbGram: $carbGram, recordedAt: $recordedAt, updatedAt: $updatedAt, createdAt: $createdAt)';
+    return 'Record(id: $id, userID: $userID, timeType: $timeType, name: $name, imageURL: $imageURL, carbGram: $carbGram, note: $note, recordedAt: $recordedAt, updatedAt: $updatedAt, createdAt: $createdAt)';
   }
 
   @override
@@ -244,12 +246,11 @@ class _$_Record implements _Record {
             (identical(other.imageURL, imageURL) ||
                 const DeepCollectionEquality()
                     .equals(other.imageURL, imageURL)) &&
-            (identical(other.intakeGram, intakeGram) ||
-                const DeepCollectionEquality()
-                    .equals(other.intakeGram, intakeGram)) &&
             (identical(other.carbGram, carbGram) ||
                 const DeepCollectionEquality()
                     .equals(other.carbGram, carbGram)) &&
+            (identical(other.note, note) ||
+                const DeepCollectionEquality().equals(other.note, note)) &&
             (identical(other.recordedAt, recordedAt) ||
                 const DeepCollectionEquality()
                     .equals(other.recordedAt, recordedAt)) &&
@@ -269,8 +270,8 @@ class _$_Record implements _Record {
       const DeepCollectionEquality().hash(timeType) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(imageURL) ^
-      const DeepCollectionEquality().hash(intakeGram) ^
       const DeepCollectionEquality().hash(carbGram) ^
+      const DeepCollectionEquality().hash(note) ^
       const DeepCollectionEquality().hash(recordedAt) ^
       const DeepCollectionEquality().hash(updatedAt) ^
       const DeepCollectionEquality().hash(createdAt);
@@ -288,11 +289,11 @@ abstract class _Record implements Record {
       @required RecordTimeType timeType,
       @required String name,
       @required String imageURL,
-      @required int intakeGram,
       @required int carbGram,
+      @required String note,
       @required DateTime recordedAt,
-      @required DateTime updatedAt,
-      @required DateTime createdAt}) = _$_Record;
+      @nullable DateTime updatedAt,
+      @nullable DateTime createdAt}) = _$_Record;
 
   @override
   @nullable
@@ -306,14 +307,16 @@ abstract class _Record implements Record {
   @override
   String get imageURL;
   @override
-  int get intakeGram;
-  @override
   int get carbGram;
+  @override
+  String get note;
   @override
   DateTime get recordedAt;
   @override
+  @nullable
   DateTime get updatedAt;
   @override
+  @nullable
   DateTime get createdAt;
   @override
   @JsonKey(ignore: true)

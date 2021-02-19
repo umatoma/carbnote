@@ -70,8 +70,8 @@ final Uint8List kTransparentImage = Uint8List.fromList(<int>[
   0xAE,
 ]);
 
-class CnProfileImage extends StatelessWidget {
-  const CnProfileImage(
+class CnCircleImage extends StatelessWidget {
+  const CnCircleImage(
     this.imageURL, {
     Key key,
     this.size = 48,
