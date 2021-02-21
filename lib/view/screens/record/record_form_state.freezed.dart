@@ -199,9 +199,21 @@ class _$_RecordFormState implements _RecordFormState {
     return _canSubmitForm;
   }
 
+  bool _didisUpdate = false;
+  bool _isUpdate;
+
+  @override
+  bool get isUpdate {
+    if (_didisUpdate == false) {
+      _didisUpdate = true;
+      _isUpdate = record.id != null;
+    }
+    return _isUpdate;
+  }
+
   @override
   String toString() {
-    return 'RecordFormState(isProcessing: $isProcessing, error: $error, user: $user, imageFile: $imageFile, record: $record, canSubmitForm: $canSubmitForm)';
+    return 'RecordFormState(isProcessing: $isProcessing, error: $error, user: $user, imageFile: $imageFile, record: $record, canSubmitForm: $canSubmitForm, isUpdate: $isUpdate)';
   }
 
   @override

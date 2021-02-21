@@ -34,6 +34,9 @@ abstract class RecordFormState with _$RecordFormState {
 
   @late
   bool get canSubmitForm => record.name.isNotEmpty;
+
+  @late
+  bool get isUpdate => record.id != null;
 }
 
 class RecordFormStateController extends StateNotifier<RecordFormState> {
@@ -41,29 +44,25 @@ class RecordFormStateController extends StateNotifier<RecordFormState> {
     this.read, {
     Record record,
   }) : super(RecordFormState(
-          isProcessing: true,
+          isProcessing: false,
           user: read(currentUserProvider),
           record: record ??
               Record(
                 userID: read(currentUserProvider).id,
                 timeType: RecordTimeType.breakfast,
                 name: '',
-                imageURL: 'https://placehold.jp/150x150.png',
                 carbGram: 0,
                 note: '',
                 recordedAt: DateTime.now(),
               ),
         )) {
     () async {
-      if (state.record.id == null) {
-        state = state.copyWith(isProcessing: false);
-      } else {
+      if (state.record.id != null) {
         state = state.copyWith(
-            isProcessing: false,
             record: await read(recordRepoProvider).getOne(
-              state.record.id,
-              state.user.id,
-            ));
+          state.record.id,
+          state.user.id,
+        ));
       }
     }();
   }
@@ -77,6 +76,12 @@ class RecordFormStateController extends StateNotifier<RecordFormState> {
       }
     }).catchError(
       (Object e, StackTrace stackTrace) => setError(e, stackTrace),
+    );
+  }
+
+  void setRecordedAt(DateTime value) {
+    state = state.copyWith(
+      record: state.record.copyWith(recordedAt: value),
     );
   }
 
@@ -110,17 +115,35 @@ class RecordFormStateController extends StateNotifier<RecordFormState> {
       final userRepo = read(userRepoProvider);
       final recordRepo = read(recordRepoProvider);
 
-      final imageURL = state.imageFile == null
-          ? null
-          : await userRepo.createImage(state.user, state.imageFile);
-      final record = imageURL == null
-          ? state.record
-          : state.record.copyWith(imageURL: imageURL);
-      if (record.id == null) {
-        await recordRepo.create(record);
-      } else {
+      if (state.isUpdate) {
+        final record = state.record.copyWith(
+          imageURL: state.imageFile == null
+              ? state.record.imageURL
+              : await userRepo.createImage(state.user, state.imageFile),
+        );
         await recordRepo.update(record);
+      } else {
+        final record = state.record.copyWith(
+          imageURL: state.imageFile == null
+              ? 'https://placehold.jp/150x150.png'
+              : await userRepo.createImage(state.user, state.imageFile),
+        );
+        await recordRepo.create(record);
       }
+
+      state = state.copyWith(isProcessing: false);
+      read(navKeyProvider).currentState.pop();
+    } catch (e, stackTrace) {
+      setError(e, stackTrace);
+      state = state.copyWith(isProcessing: false);
+    }
+  }
+
+  Future<void> deleteRecord() async {
+    state = state.copyWith(isProcessing: true);
+    try {
+      final recordRepo = read(recordRepoProvider);
+      await recordRepo.delete(state.record);
 
       state = state.copyWith(isProcessing: false);
       read(navKeyProvider).currentState.pop();

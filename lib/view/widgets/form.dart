@@ -84,27 +84,36 @@ class CnImageField extends StatelessWidget {
     @required this.onPressed,
     @required this.icon,
     this.image,
-  }) : super();
+  })  : imageURL = null,
+        imageFile = null,
+        super();
 
-  CnImageField.fileOrURL({
+  const CnImageField.fileOrURL({
     @required this.onPressed,
     @required this.icon,
-    @required String imageURL,
-    File imageFile,
-  })  : image = imageFile == null
-            ? CachedNetworkImage(
-                placeholder: (_, __) => Image.memory(kTransparentImage),
-                imageUrl: imageURL,
-              )
-            : Image.file(imageFile),
+    this.imageURL,
+    this.imageFile,
+  })  : image = null,
         super();
 
   final void Function() onPressed;
   final IconData icon;
+  final String imageURL;
+  final File imageFile;
   final Widget image;
 
   @override
   Widget build(BuildContext context) {
+    Widget _image = image;
+    if (imageFile != null) {
+      _image = Image.file(imageFile);
+    } else if (imageURL != null) {
+      _image = CachedNetworkImage(
+        placeholder: (context, url) => Image.memory(kTransparentImage),
+        imageUrl: imageURL,
+      );
+    }
+
     return SizedBox(
       width: 128,
       height: 128,
@@ -127,7 +136,7 @@ class CnImageField extends StatelessWidget {
                 onTap: onPressed,
                 borderRadius: BorderRadius.circular(64),
                 child: ClipOval(
-                  child: image == null
+                  child: _image == null
                       ? Center(
                           child: Icon(
                             icon,
@@ -140,7 +149,7 @@ class CnImageField extends StatelessWidget {
                           height: double.infinity,
                           child: FittedBox(
                             fit: BoxFit.cover,
-                            child: image,
+                            child: _image,
                           ),
                         ),
                 ),

@@ -182,7 +182,7 @@ class HomeRecordsSummary extends HookWidget {
   Widget build(BuildContext context) {
     final summary = useProvider(recordsSummaryProvider).data?.value;
 
-    return CnRecordsSummary(
+    return CnOneDayRecordsSummary(
       summary: summary,
     );
   }

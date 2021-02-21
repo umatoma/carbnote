@@ -57,6 +57,15 @@ class RecordRepo {
     return await getOne(ref.id, record.userID);
   }
 
+  Future<void> delete(Record record) async {
+    final ref = firestore
+        .collection('users')
+        .doc(record.userID)
+        .collection('records')
+        .doc(record.id);
+    await ref.delete();
+  }
+
   RecordTimeType stringToTimeType(String value) {
     switch (value) {
       case 'breakfast':

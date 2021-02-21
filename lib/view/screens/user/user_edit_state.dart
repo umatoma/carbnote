@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:carbnote/models/user_model.dart';
 import 'package:carbnote/view/providers.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -13,21 +14,12 @@ final userEditStateProvider = StateNotifierProvider.autoDispose((ref) {
 });
 
 @freezed
-abstract class UserEditForm with _$UserEditForm {
-  factory UserEditForm({
-    @required String nickname,
-    @required String imageURL,
-    @nullable File imageFile,
-    @required int goalCarbGram,
-  }) = _UserEditForm;
-}
-
-@freezed
 abstract class UserEditState with _$UserEditState {
   factory UserEditState({
     @required bool isProcessing,
     @nullable Object error,
-    @required UserEditForm form,
+    @required User user,
+    @nullable File imageFile,
   }) = _UserEditState;
 }
 
@@ -35,11 +27,7 @@ class UserEditStateNotifier extends StateNotifier<UserEditState> {
   UserEditStateNotifier(this.read)
       : super(UserEditState(
           isProcessing: false,
-          form: UserEditForm(
-            nickname: read(currentUserProvider).nickname,
-            imageURL: read(currentUserProvider).imageURL,
-            goalCarbGram: read(currentUserProvider).goalCarbGram,
-          ),
+          user: read(currentUserProvider),
         ));
 
   final Reader read;
@@ -47,9 +35,7 @@ class UserEditStateNotifier extends StateNotifier<UserEditState> {
   void pickImageFile() {
     ImagePicker().getImage(source: ImageSource.gallery).then((value) {
       if (value != null) {
-        state = state.copyWith(
-          form: state.form.copyWith(imageFile: File(value.path)),
-        );
+        state = state.copyWith(imageFile: File(value.path));
       }
     }).catchError(
       (Object e, StackTrace stackTrace) => setError(e, stackTrace),
@@ -58,13 +44,13 @@ class UserEditStateNotifier extends StateNotifier<UserEditState> {
 
   void setNickname(String value) {
     state = state.copyWith(
-      form: state.form.copyWith(nickname: value),
+      user: state.user.copyWith(nickname: value),
     );
   }
 
   void setGoalCarbGram(int value) {
     state = state.copyWith(
-      form: state.form.copyWith(goalCarbGram: value),
+      user: state.user.copyWith(goalCarbGram: value),
     );
   }
 
@@ -72,15 +58,11 @@ class UserEditStateNotifier extends StateNotifier<UserEditState> {
     state = state.copyWith(isProcessing: true);
     try {
       final userRepo = read(userRepoProvider);
-      final user = read(currentUserProvider);
-
-      final imageURL = state.form.imageFile == null
-          ? state.form.imageURL
-          : await userRepo.createImage(user, state.form.imageFile);
-      await userRepo.update(user.copyWith(
-        nickname: state.form.nickname,
-        imageURL: imageURL,
-      ));
+      final imageURL = state.imageFile == null
+          ? state.user.imageURL
+          : await userRepo.createImage(state.user, state.imageFile);
+      final user = state.user.copyWith(imageURL: imageURL);
+      await userRepo.update(user);
 
       state = state.copyWith(isProcessing: false);
       read(navKeyProvider).currentState.pop();

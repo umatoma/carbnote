@@ -98,6 +98,12 @@ class CnNavButton extends StatelessWidget {
   })  : icon = const Icon(CupertinoIcons.gear),
         super(key: key);
 
+  const CnNavButton.calendar({
+    Key key,
+    @required this.onPressed,
+  })  : icon = const Icon(CupertinoIcons.calendar),
+        super(key: key);
+
   final void Function() onPressed;
   final Icon icon;
 

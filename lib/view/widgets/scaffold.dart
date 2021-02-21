@@ -1,6 +1,7 @@
+import 'package:carbnote/view/screens/home/home_screen.dart';
 import 'package:carbnote/view/screens/record/record_form_screen.dart';
+import 'package:carbnote/view/screens/record/record_summary_screen.dart';
 import 'package:carbnote/view/screens/user/user_screen.dart';
-import 'package:carbnote/view/widgets/nav_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -118,14 +119,25 @@ class CnBottomNav extends StatelessWidget {
   void _onPressed(BuildContext context, int toIndex) {
     switch (toIndex) {
       case 0:
-        Navigator.of(context).pop();
+        Navigator.of(context).pushReplacement(
+          PageTransition<void>(
+            child: const HomeScreen(),
+            type: PageTransitionType.fade,
+          ),
+        );
         break;
       case 1:
         break;
       case 2:
+        Navigator.of(context).pushReplacement(
+          PageTransition<void>(
+            child: const RecordSummaryScreen(),
+            type: PageTransitionType.fade,
+          ),
+        );
         break;
       case 3:
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           PageTransition<void>(
             child: const ProfileScreen(),
             type: PageTransitionType.fade,

@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carbnote/view/screens/user/user_edit_state.dart';
 import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/container.dart';
@@ -34,13 +33,12 @@ class ProfileEditScreen extends HookWidget {
               padding: const EdgeInsets.symmetric(horizontal: 32),
               child: Hero(
                 tag: 'ProfileImage',
-                child: CnImageField(
+                child: CnImageField.fileOrURL(
                   onPressed: () =>
                       context.read(userEditStateProvider).pickImageFile(),
                   icon: CupertinoIcons.person,
-                  image: state.form.imageFile == null
-                      ? CachedNetworkImage(imageUrl: state.form.imageURL)
-                      : Image.file(state.form.imageFile),
+                  imageURL: state.user.imageURL,
+                  imageFile: state.imageFile,
                 ),
               ),
             ),
@@ -50,7 +48,7 @@ class ProfileEditScreen extends HookWidget {
               child: CnTextField(
                 onChanged: (value) =>
                     context.read(userEditStateProvider).setNickname(value),
-                initialValue: state.form.nickname,
+                initialValue: state.user.nickname,
               ),
             ),
             const SizedBox(height: 16),
@@ -71,7 +69,7 @@ class ProfileEditScreen extends HookWidget {
                             onPressed: () => context
                                 .read(userEditStateProvider)
                                 .setGoalCarbGram(gram),
-                            selected: state.form.goalCarbGram == gram,
+                            selected: state.user.goalCarbGram == gram,
                             child: Text('${gram}g'),
                           ),
                         ),

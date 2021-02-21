@@ -123,6 +123,49 @@ class CnSecondaryButton extends StatelessWidget {
   }
 }
 
+class CnWarningButton extends StatelessWidget {
+  const CnWarningButton({
+    Key key,
+    @required this.onPressed,
+    @required this.child,
+    this.width = double.infinity,
+    this.height = 48,
+  }) : super(key: key);
+
+  final void Function() onPressed;
+  final Widget child;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: Theme.of(context).outlinedButtonTheme.style.copyWith(
+              side: MaterialStateProperty.all(
+                const BorderSide(color: Colors.red),
+              ),
+              overlayColor: MaterialStateProperty.all(
+                Colors.red[100].withOpacity(0.5),
+              ),
+              foregroundColor: MaterialStateProperty.all(
+                onPressed == null ? Colors.grey : Colors.red,
+              ),
+              backgroundColor: MaterialStateProperty.all(
+                onPressed == null
+                    ? Colors.white.withOpacity(0.8)
+                    : Colors.white,
+              ),
+            ),
+        child: child,
+      ),
+    );
+  }
+}
+
 class CnBottomButtonsContainer extends StatelessWidget {
   const CnBottomButtonsContainer({
     Key key,

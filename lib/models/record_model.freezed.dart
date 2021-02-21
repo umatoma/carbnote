@@ -19,7 +19,7 @@ class _$RecordTearOff {
       @required String userID,
       @required RecordTimeType timeType,
       @required String name,
-      @required String imageURL,
+      @nullable String imageURL,
       @required int carbGram,
       @required String note,
       @required DateTime recordedAt,
@@ -51,6 +51,7 @@ mixin _$Record {
   String get userID;
   RecordTimeType get timeType;
   String get name;
+  @nullable
   String get imageURL;
   int get carbGram;
   String get note;
@@ -73,7 +74,7 @@ abstract class $RecordCopyWith<$Res> {
       String userID,
       RecordTimeType timeType,
       String name,
-      String imageURL,
+      @nullable String imageURL,
       int carbGram,
       String note,
       DateTime recordedAt,
@@ -131,7 +132,7 @@ abstract class _$RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       String userID,
       RecordTimeType timeType,
       String name,
-      String imageURL,
+      @nullable String imageURL,
       int carbGram,
       String note,
       DateTime recordedAt,
@@ -181,13 +182,13 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_Record implements _Record {
-  const _$_Record(
+class _$_Record extends _Record {
+  _$_Record(
       {@nullable this.id,
       @required this.userID,
       @required this.timeType,
       @required this.name,
-      @required this.imageURL,
+      @nullable this.imageURL,
       @required this.carbGram,
       @required this.note,
       @required this.recordedAt,
@@ -196,10 +197,10 @@ class _$_Record implements _Record {
       : assert(userID != null),
         assert(timeType != null),
         assert(name != null),
-        assert(imageURL != null),
         assert(carbGram != null),
         assert(note != null),
-        assert(recordedAt != null);
+        assert(recordedAt != null),
+        super._();
 
   @override
   @nullable
@@ -211,6 +212,7 @@ class _$_Record implements _Record {
   @override
   final String name;
   @override
+  @nullable
   final String imageURL;
   @override
   final int carbGram;
@@ -282,13 +284,14 @@ class _$_Record implements _Record {
       __$RecordCopyWithImpl<_Record>(this, _$identity);
 }
 
-abstract class _Record implements Record {
-  const factory _Record(
+abstract class _Record extends Record {
+  _Record._() : super._();
+  factory _Record(
       {@nullable String id,
       @required String userID,
       @required RecordTimeType timeType,
       @required String name,
-      @required String imageURL,
+      @nullable String imageURL,
       @required int carbGram,
       @required String note,
       @required DateTime recordedAt,
@@ -305,6 +308,7 @@ abstract class _Record implements Record {
   @override
   String get name;
   @override
+  @nullable
   String get imageURL;
   @override
   int get carbGram;
@@ -426,6 +430,50 @@ class _$_RecordsSummary extends _RecordsSummary {
   @override
   final List<Record> records;
 
+  bool _didsummariesGroupByRecordedDay = false;
+  Map<DateTime, RecordsSummary> _summariesGroupByRecordedDay;
+
+  @override
+  Map<DateTime, RecordsSummary> get summariesGroupByRecordedDay {
+    if (_didsummariesGroupByRecordedDay == false) {
+      _didsummariesGroupByRecordedDay = true;
+      _summariesGroupByRecordedDay = records
+          .map((record) => record.recordedAt.startOfDay())
+          .fold(<DateTime, RecordsSummary>{}, (map, key) {
+        map[key] = RecordsSummary(
+          goalCarbGram: goalCarbGram,
+          records: records
+              .where((record) => record.recordedAt.startOfDay() == key)
+              .toList(),
+        );
+        return map;
+      });
+    }
+    return _summariesGroupByRecordedDay;
+  }
+
+  bool _didsummariesGroupByRecordedMonth = false;
+  Map<DateTime, RecordsSummary> _summariesGroupByRecordedMonth;
+
+  @override
+  Map<DateTime, RecordsSummary> get summariesGroupByRecordedMonth {
+    if (_didsummariesGroupByRecordedMonth == false) {
+      _didsummariesGroupByRecordedMonth = true;
+      _summariesGroupByRecordedMonth = records
+          .map((record) => record.recordedAt.startOfMonth())
+          .fold(<DateTime, RecordsSummary>{}, (map, key) {
+        map[key] = RecordsSummary(
+          goalCarbGram: goalCarbGram,
+          records: records
+              .where((record) => record.recordedAt.startOfMonth() == key)
+              .toList(),
+        );
+        return map;
+      });
+    }
+    return _summariesGroupByRecordedMonth;
+  }
+
   bool _didtotalCarbGram = false;
   int _totalCarbGram;
 
@@ -439,16 +487,28 @@ class _$_RecordsSummary extends _RecordsSummary {
     return _totalCarbGram;
   }
 
-  bool _didremainGram = false;
-  int _remainGram;
+  bool _didremainCarbGram = false;
+  int _remainCarbGram;
 
   @override
-  int get remainGram {
-    if (_didremainGram == false) {
-      _didremainGram = true;
-      _remainGram = goalCarbGram - totalCarbGram;
+  int get remainCarbGram {
+    if (_didremainCarbGram == false) {
+      _didremainCarbGram = true;
+      _remainCarbGram = goalCarbGram - totalCarbGram;
     }
-    return _remainGram;
+    return _remainCarbGram;
+  }
+
+  bool _didaverageCarbGram = false;
+  int _averageCarbGram;
+
+  @override
+  int get averageCarbGram {
+    if (_didaverageCarbGram == false) {
+      _didaverageCarbGram = true;
+      _averageCarbGram = records.isEmpty ? 0 : totalCarbGram ~/ records.length;
+    }
+    return _averageCarbGram;
   }
 
   bool _didmaxByTotalAndGoalCarbGram = false;
@@ -475,9 +535,23 @@ class _$_RecordsSummary extends _RecordsSummary {
     return _isOverGoalCarbGram;
   }
 
+  bool _didachievedGoalCarbGramDays = false;
+  int _achievedGoalCarbGramDays;
+
+  @override
+  int get achievedGoalCarbGramDays {
+    if (_didachievedGoalCarbGramDays == false) {
+      _didachievedGoalCarbGramDays = true;
+      _achievedGoalCarbGramDays = summariesGroupByRecordedDay.values
+          .where((summary) => summary.isOverGoalCarbGram == false)
+          .length;
+    }
+    return _achievedGoalCarbGramDays;
+  }
+
   @override
   String toString() {
-    return 'RecordsSummary(goalCarbGram: $goalCarbGram, records: $records, totalCarbGram: $totalCarbGram, remainGram: $remainGram, maxByTotalAndGoalCarbGram: $maxByTotalAndGoalCarbGram, isOverGoalCarbGram: $isOverGoalCarbGram)';
+    return 'RecordsSummary(goalCarbGram: $goalCarbGram, records: $records, summariesGroupByRecordedDay: $summariesGroupByRecordedDay, summariesGroupByRecordedMonth: $summariesGroupByRecordedMonth, totalCarbGram: $totalCarbGram, remainCarbGram: $remainCarbGram, averageCarbGram: $averageCarbGram, maxByTotalAndGoalCarbGram: $maxByTotalAndGoalCarbGram, isOverGoalCarbGram: $isOverGoalCarbGram, achievedGoalCarbGramDays: $achievedGoalCarbGramDays)';
   }
 
   @override

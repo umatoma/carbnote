@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carbnote/models/record_model.dart';
 import 'package:carbnote/view/screens/record/record_form_state.dart';
 import 'package:carbnote/view/strings.dart';
 import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/container.dart';
+import 'package:carbnote/view/widgets/dialog.dart';
 import 'package:carbnote/view/widgets/form.dart';
 import 'package:carbnote/view/widgets/nav_bar.dart';
 import 'package:carbnote/view/widgets/scaffold.dart';
@@ -31,6 +31,21 @@ class RecordFormScreen extends HookWidget {
           ),
           middle: Text(
             DateFormat('MM月dd日').format(state.record.recordedAt),
+          ),
+          trailing: CnNavButton.calendar(
+            onPressed: () async {
+              final date = await showDatePicker(
+                context: context,
+                initialDate: state.record.recordedAt,
+                firstDate: DateTime.now().subtract(const Duration(days: 365)),
+                lastDate: DateTime.now().add(const Duration(days: 1)),
+              );
+              if (date != null) {
+                context
+                    .read(recordFormStateProvider(currentRecord))
+                    .setRecordedAt(date);
+              }
+            },
           ),
         ),
         body: Column(
@@ -150,6 +165,21 @@ class RecordFormScreen extends HookWidget {
                       : null,
                   child: const Text('登録'),
                 ),
+                if (state.isUpdate)
+                  CnWarningButton(
+                    onPressed: () async {
+                      final result = await showCnConfirmDialog(
+                        context: context,
+                        title: const Text('削除しますか？'),
+                      );
+                      if (result) {
+                        await context
+                            .read(recordFormStateProvider(currentRecord))
+                            .deleteRecord();
+                      }
+                    },
+                    child: const Text('削除'),
+                  ),
               ],
             ),
           ],

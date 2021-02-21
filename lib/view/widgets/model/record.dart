@@ -1,7 +1,12 @@
+import 'dart:math';
+
+import 'package:carbnote/models/date_time.dart';
 import 'package:carbnote/models/record_model.dart';
 import 'package:carbnote/view/strings.dart';
 import 'package:carbnote/view/widgets/image.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CnRecordListItem extends StatelessWidget {
   const CnRecordListItem({
@@ -44,17 +49,20 @@ class CnRecordListItem extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            Column(
-              children: [
-                Text(
-                  '${record.carbGram}g',
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-                Text(
-                  '糖質',
-                  style: Theme.of(context).textTheme.caption,
-                ),
-              ],
+            SizedBox(
+              width: 48,
+              child: Column(
+                children: [
+                  Text(
+                    '${record.carbGram}g',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
+                  Text(
+                    '糖質',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -63,8 +71,8 @@ class CnRecordListItem extends StatelessWidget {
   }
 }
 
-class CnRecordsSummary extends StatelessWidget {
-  const CnRecordsSummary({
+class CnOneDayRecordsSummary extends StatelessWidget {
+  const CnOneDayRecordsSummary({
     @required this.summary,
     this.duration = const Duration(milliseconds: 1000),
   }) : super();
@@ -225,6 +233,104 @@ class CnRecordsSummary extends StatelessWidget {
           ],
         );
       },
+    );
+  }
+}
+
+class CnRecordsSummaryLineChart extends StatelessWidget {
+  const CnRecordsSummaryLineChart({
+    @required this.summary,
+    @required this.range,
+    @required this.unit,
+  }) : super();
+
+  final RecordsSummary summary;
+  final DateTimeRange range;
+  final DateTimeUnit unit;
+
+  @override
+  Widget build(BuildContext context) {
+    final dateTimes = List.generate(
+      range.duration.inDays + 1,
+      (i) => range.start.add(Duration(days: i)),
+    );
+
+    final Map<DateTime, RecordsSummary> summaries = unit == DateTimeUnit.month
+        ? summary.summariesGroupByRecordedMonth
+        : summary.summariesGroupByRecordedDay;
+    final String Function(double) getBottomTitles = unit == DateTimeUnit.month
+        ? (value) {
+            final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+            return date.day == 1 ? DateFormat('MM月').format(date) : '';
+          }
+        : (value) {
+            final date = DateTime.fromMillisecondsSinceEpoch(value.toInt());
+            return date.weekday == DateTime.monday
+                ? DateFormat('MM/dd').format(date)
+                : '';
+          };
+    final maxY = unit == DateTimeUnit.month
+        ? max(
+            4000.0,
+            summaries.values.map((e) => e.totalCarbGram).fold(0, max),
+          ).toDouble()
+        : max(
+            150.0,
+            summaries.values.map((e) => e.totalCarbGram).fold(0, max),
+          ).toDouble();
+    final horizontalInterval = unit == DateTimeUnit.month
+        ? (summary.goalCarbGram * 30).toDouble()
+        : summary.goalCarbGram.toDouble();
+
+    return SizedBox(
+      width: double.infinity,
+      height: 300,
+      child: BarChart(
+        BarChartData(
+          minY: 0,
+          maxY: maxY,
+          borderData: FlBorderData(
+            show: false,
+          ),
+          gridData: FlGridData(
+            horizontalInterval: horizontalInterval,
+            drawHorizontalLine: true,
+            getDrawingHorizontalLine: (value) {
+              return FlLine(
+                strokeWidth: 1,
+                color: value == horizontalInterval
+                    ? Theme.of(context).primaryColorLight
+                    : Colors.transparent,
+              );
+            },
+          ),
+          titlesData: FlTitlesData(
+            leftTitles: SideTitles(
+              showTitles: true,
+              interval: maxY > 200 ? 200 : 10,
+            ),
+            bottomTitles: SideTitles(
+              showTitles: true,
+              rotateAngle: 45,
+              getTitles: getBottomTitles,
+            ),
+          ),
+          barGroups: [
+            for (final date in dateTimes)
+              BarChartGroupData(
+                x: date.millisecondsSinceEpoch,
+                barRods: [
+                  BarChartRodData(
+                    width: 4,
+                    y: summaries.containsKey(date)
+                        ? summaries[date].totalCarbGram.toDouble()
+                        : 0,
+                  ),
+                ],
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
