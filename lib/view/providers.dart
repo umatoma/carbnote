@@ -1,5 +1,6 @@
 // ignore_for_file: top_level_function_literal_block
 import 'package:carbnote/repos/auth_user_repo.dart';
+import 'package:carbnote/repos/food_repo.dart';
 import 'package:carbnote/repos/record_repo.dart';
 import 'package:carbnote/repos/user_repo.dart';
 import 'package:carbnote/view/theme.dart';
@@ -11,6 +12,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 final authUserRepoProvider = Provider((ref) => AuthUserRepo());
 final userRepoProvider = Provider((ref) => UserRepo());
 final recordRepoProvider = Provider((ref) => RecordRepo());
+final foodRepoProvider = Provider.autoDispose((ref) {
+  final repo = FoodRepo();
+  ref.onDispose(() => repo.dispose());
+  return repo;
+});
 
 // ---------- AuthUser ---------- //
 

@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:io';
 
+import 'package:carbnote/models/food_model.dart';
 import 'package:carbnote/models/record_model.dart';
 import 'package:carbnote/models/user_model.dart';
 import 'package:carbnote/view/providers.dart';
@@ -7,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:stream_transform/stream_transform.dart';
 
 part 'record_form_state.freezed.dart';
 
@@ -22,13 +25,33 @@ final recordFormStateProvider = StateNotifierProvider.autoDispose
   );
 });
 
+final searchControllerProvider = Provider.autoDispose((ref) {
+  return StreamController<String>();
+});
+
+final foodsProvider = StreamProvider.autoDispose((ref) {
+  final foodRepo = ref.read(foodRepoProvider);
+  return ref
+      .watch(searchControllerProvider)
+      .stream
+      .debounce(const Duration(seconds: 1))
+      .map((intput) => intput.trim())
+      .asyncMap(
+        (input) => input.isEmpty
+            ? Future.value(<Food>[])
+            : foodRepo.searchListByName(input),
+      );
+});
+
 @freezed
 abstract class RecordFormState with _$RecordFormState {
   factory RecordFormState({
     @required bool isProcessing,
+    @required bool isSearching,
     @nullable Object error,
     @required User user,
     @nullable File imageFile,
+    @nullable Food food,
     @required Record record,
   }) = _RecordFormState;
 
@@ -45,6 +68,7 @@ class RecordFormStateController extends StateNotifier<RecordFormState> {
     Record record,
   }) : super(RecordFormState(
           isProcessing: false,
+          isSearching: false,
           user: read(currentUserProvider),
           record: record ??
               Record(
@@ -68,6 +92,29 @@ class RecordFormStateController extends StateNotifier<RecordFormState> {
   }
 
   final Reader read;
+
+  void setIsSearching(bool value) {
+    state = state.copyWith(isSearching: value);
+  }
+
+  void setFood(Food value) {
+    state = state.copyWith(
+      food: value,
+      record: state.record.copyWith(
+        name: value.name,
+        carbGram: 0,
+      ),
+    );
+  }
+
+  void setIntakeGram(int value) {
+    state = state.copyWith(
+      food: state.food.copyWith(intakeGram: value),
+      record: state.record.copyWith(
+        carbGram: (value * state.food.carbGramPer1Gram).toInt(),
+      ),
+    );
+  }
 
   void pickImageFile() {
     ImagePicker().getImage(source: ImageSource.gallery).then((value) {

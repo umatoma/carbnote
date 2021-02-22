@@ -5,10 +5,11 @@ import 'package:carbnote/view/widgets/image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CnTextField extends StatelessWidget {
+class CnTextField extends StatefulWidget {
   const CnTextField({
     Key key,
     this.onChanged,
+    this.onFocusChanged,
     this.controller,
     this.initialValue,
     this.keyboardType,
@@ -16,9 +17,11 @@ class CnTextField extends StatelessWidget {
     this.hintText,
     this.prefixIcon = CupertinoIcons.pencil,
     this.maxLength = 128,
+    this.autofocus = false,
   }) : super(key: key);
 
   final void Function(String value) onChanged;
+  final void Function(bool hasFocus) onFocusChanged;
   final TextEditingController controller;
   final String initialValue;
   final TextInputType keyboardType;
@@ -26,6 +29,28 @@ class CnTextField extends StatelessWidget {
   final String hintText;
   final IconData prefixIcon;
   final int maxLength;
+  final bool autofocus;
+
+  @override
+  _CnTextFieldState createState() => _CnTextFieldState();
+}
+
+class _CnTextFieldState extends State<CnTextField> {
+  FocusNode _focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode = FocusNode();
+    _focusNode.addListener(_onFocusNodeChange);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusNodeChange);
+    _focusNode.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,18 +67,20 @@ class CnTextField extends StatelessWidget {
       ),
       child: Center(
         child: TextFormField(
-          onChanged: onChanged,
-          controller: controller,
-          initialValue: initialValue,
-          keyboardType: keyboardType,
-          obscureText: obscureText,
+          onChanged: widget.onChanged,
+          focusNode: _focusNode,
+          controller: widget.controller,
+          initialValue: widget.initialValue,
+          keyboardType: widget.keyboardType,
+          obscureText: widget.obscureText,
           cursorWidth: 1,
           maxLines: 1,
-          maxLength: maxLength,
+          maxLength: widget.maxLength,
+          autofocus: widget.autofocus,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.only(bottom: 4),
             counterText: '',
-            hintText: hintText,
+            hintText: widget.hintText,
             hintStyle: const TextStyle(color: Colors.grey),
             alignLabelWithHint: true,
             enabledBorder: InputBorder.none,
@@ -66,7 +93,7 @@ class CnTextField extends StatelessWidget {
             prefixIcon: Padding(
               padding: const EdgeInsets.only(right: 16),
               child: Icon(
-                prefixIcon,
+                widget.prefixIcon,
                 size: 16,
                 color: Theme.of(context).primaryColor,
               ),
@@ -76,6 +103,10 @@ class CnTextField extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onFocusNodeChange() {
+    widget.onFocusChanged?.call(_focusNode.hasFocus);
   }
 }
 

@@ -29,7 +29,7 @@ class SignUpScreen extends HookWidget {
             extendBody: true,
             extendBodyBehindAppBar: true,
             appBar: CnTransparentNavBar(
-              leading: CnIconSwitcher(
+              leading: CnScaleSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: state.page == 0
                     ? CnNavButton.close(
