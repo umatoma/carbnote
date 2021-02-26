@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:carbnote/models/food_model.dart';
+import 'package:carbnote/models/menu_model.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class FoodRepo {
+class MenuRepo {
   static Future<void> copyDatabase() async {
     final dbsPath = await getDatabasesPath();
     final path = join(dbsPath, 'app.db');
@@ -33,18 +33,19 @@ class FoodRepo {
     return db;
   }
 
-  Future<List<Food>> searchListByName(String name) async {
+  Future<List<Menu>> searchListByName(String name) async {
     final db = await getDatabase();
     final rows = await db.rawQuery(
-      'SELECT * FROM foods where name LIKE ? ORDER BY name LIMIT 100',
+      'SELECT * FROM menus where name LIKE ? ORDER BY name LIMIT 100',
       <String>['%$name%'],
     );
     final foods = rows.map((row) {
-      return Food(
+      return Menu(
         id: row['id'] as int,
-        no: row['no'] as int,
+        category: row['category'] as String,
         name: row['name'] as String,
-        carbGram: (row['carb_gram'] as double).toInt(),
+        unit: row['unit'] as String,
+        carbGramPerUnit: row['carb_gram_per_unit'] as double,
       );
     }).toList();
     return foods;

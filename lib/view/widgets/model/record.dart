@@ -216,7 +216,7 @@ class CnOneDayRecordsSummary extends StatelessWidget {
               width: double.infinity,
               height: double.infinity,
               decoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(16),
               ),
             ),

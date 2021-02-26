@@ -193,7 +193,7 @@ class RecordSummaryTabBody extends HookWidget {
                     child: Column(
                       children: [
                         Text(
-                          '${summary.averageCarbGram}g',
+                          '${summary.averageCarbGramPerDay}g',
                           style: Theme.of(context)
                               .textTheme
                               .headline6

@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carbnote/view/widgets/image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class CnTextField extends StatefulWidget {
   const CnTextField({
@@ -14,6 +15,7 @@ class CnTextField extends StatefulWidget {
     this.initialValue,
     this.keyboardType,
     this.obscureText = false,
+    this.readOnly = false,
     this.hintText,
     this.prefixIcon = CupertinoIcons.pencil,
     this.maxLength = 128,
@@ -26,6 +28,7 @@ class CnTextField extends StatefulWidget {
   final String initialValue;
   final TextInputType keyboardType;
   final bool obscureText;
+  final bool readOnly;
   final String hintText;
   final IconData prefixIcon;
   final int maxLength;
@@ -62,7 +65,7 @@ class _CnTextFieldState extends State<CnTextField> {
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
           width: 1,
-          color: Colors.grey[300],
+          color: widget.readOnly ? Colors.transparent : Colors.grey[300],
         ),
       ),
       child: Center(
@@ -73,6 +76,7 @@ class _CnTextFieldState extends State<CnTextField> {
           initialValue: widget.initialValue,
           keyboardType: widget.keyboardType,
           obscureText: widget.obscureText,
+          readOnly: widget.readOnly,
           cursorWidth: 1,
           maxLines: 1,
           maxLength: widget.maxLength,
@@ -95,7 +99,9 @@ class _CnTextFieldState extends State<CnTextField> {
               child: Icon(
                 widget.prefixIcon,
                 size: 16,
-                color: Theme.of(context).primaryColor,
+                color: widget.readOnly
+                    ? Colors.grey[300]
+                    : Theme.of(context).primaryColor,
               ),
             ),
             // prefixIcon: Icon(CupertinoIcons.pencil),
@@ -315,6 +321,97 @@ class _CnGramFieldState extends State<CnGramField> {
         capRightEdge: false,
       ),
       children: children,
+    );
+  }
+}
+
+class CnSlider extends StatelessWidget {
+  const CnSlider({
+    Key key,
+    @required this.onChanged,
+    @required this.value,
+    @required this.label,
+    this.min = 0.0,
+    this.max = 100.0,
+    this.divisions,
+    this.readOnly = false,
+    this.width = double.infinity,
+    this.height = 48.0,
+  }) : super(key: key);
+
+  final void Function(double value) onChanged;
+  final double value;
+  final String label;
+  final double min;
+  final double max;
+  final int divisions;
+  final bool readOnly;
+  final double width;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Row(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    '$min',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    '$max',
+                    style: Theme.of(context).textTheme.caption,
+                  ),
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: height,
+                  child: SliderTheme(
+                    data: Theme.of(context).sliderTheme.copyWith(
+                          trackHeight: 2,
+                          tickMarkShape: SliderTickMarkShape.noTickMark,
+                          disabledActiveTrackColor:
+                              Theme.of(context).primaryColor,
+                          inactiveTrackColor: Colors.grey[300],
+                          disabledThumbColor: Colors.grey[300],
+                        ),
+                    child: Slider(
+                      onChanged: readOnly ? null : onChanged,
+                      value: value,
+                      min: min,
+                      max: max,
+                      divisions: divisions,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 8),
+          SizedBox(
+            width: 48,
+            child: Center(
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.bodyText2.apply(
+                      color: Theme.of(context).primaryColor,
+                    ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+        ],
+      ),
     );
   }
 }

@@ -1,4 +1,4 @@
-import 'package:carbnote/repos/food_repo.dart';
+import 'package:carbnote/repos/menu_repo.dart';
 import 'package:carbnote/view/app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -22,7 +22,7 @@ Future<void> main() async {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   }
 
-  await FoodRepo.copyDatabase();
+  await MenuRepo.copyDatabase();
 
   runApp(
     const ProviderScope(

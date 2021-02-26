@@ -20,7 +20,7 @@ class _$RecordFormStateTearOff {
       @nullable Object error,
       @required User user,
       @nullable File imageFile,
-      @nullable Food food,
+      @nullable Menu menu,
       @required Record record}) {
     return _RecordFormState(
       isProcessing: isProcessing,
@@ -28,7 +28,7 @@ class _$RecordFormStateTearOff {
       error: error,
       user: user,
       imageFile: imageFile,
-      food: food,
+      menu: menu,
       record: record,
     );
   }
@@ -48,7 +48,7 @@ mixin _$RecordFormState {
   @nullable
   File get imageFile;
   @nullable
-  Food get food;
+  Menu get menu;
   Record get record;
 
   @JsonKey(ignore: true)
@@ -66,11 +66,11 @@ abstract class $RecordFormStateCopyWith<$Res> {
       @nullable Object error,
       User user,
       @nullable File imageFile,
-      @nullable Food food,
+      @nullable Menu menu,
       Record record});
 
   $UserCopyWith<$Res> get user;
-  $FoodCopyWith<$Res> get food;
+  $MenuCopyWith<$Res> get menu;
   $RecordCopyWith<$Res> get record;
 }
 
@@ -90,7 +90,7 @@ class _$RecordFormStateCopyWithImpl<$Res>
     Object error = freezed,
     Object user = freezed,
     Object imageFile = freezed,
-    Object food = freezed,
+    Object menu = freezed,
     Object record = freezed,
   }) {
     return _then(_value.copyWith(
@@ -101,7 +101,7 @@ class _$RecordFormStateCopyWithImpl<$Res>
       error: error == freezed ? _value.error : error,
       user: user == freezed ? _value.user : user as User,
       imageFile: imageFile == freezed ? _value.imageFile : imageFile as File,
-      food: food == freezed ? _value.food : food as Food,
+      menu: menu == freezed ? _value.menu : menu as Menu,
       record: record == freezed ? _value.record : record as Record,
     ));
   }
@@ -117,12 +117,12 @@ class _$RecordFormStateCopyWithImpl<$Res>
   }
 
   @override
-  $FoodCopyWith<$Res> get food {
-    if (_value.food == null) {
+  $MenuCopyWith<$Res> get menu {
+    if (_value.menu == null) {
       return null;
     }
-    return $FoodCopyWith<$Res>(_value.food, (value) {
-      return _then(_value.copyWith(food: value));
+    return $MenuCopyWith<$Res>(_value.menu, (value) {
+      return _then(_value.copyWith(menu: value));
     });
   }
 
@@ -150,13 +150,13 @@ abstract class _$RecordFormStateCopyWith<$Res>
       @nullable Object error,
       User user,
       @nullable File imageFile,
-      @nullable Food food,
+      @nullable Menu menu,
       Record record});
 
   @override
   $UserCopyWith<$Res> get user;
   @override
-  $FoodCopyWith<$Res> get food;
+  $MenuCopyWith<$Res> get menu;
   @override
   $RecordCopyWith<$Res> get record;
 }
@@ -179,7 +179,7 @@ class __$RecordFormStateCopyWithImpl<$Res>
     Object error = freezed,
     Object user = freezed,
     Object imageFile = freezed,
-    Object food = freezed,
+    Object menu = freezed,
     Object record = freezed,
   }) {
     return _then(_RecordFormState(
@@ -190,7 +190,7 @@ class __$RecordFormStateCopyWithImpl<$Res>
       error: error == freezed ? _value.error : error,
       user: user == freezed ? _value.user : user as User,
       imageFile: imageFile == freezed ? _value.imageFile : imageFile as File,
-      food: food == freezed ? _value.food : food as Food,
+      menu: menu == freezed ? _value.menu : menu as Menu,
       record: record == freezed ? _value.record : record as Record,
     ));
   }
@@ -204,7 +204,7 @@ class _$_RecordFormState implements _RecordFormState {
       @nullable this.error,
       @required this.user,
       @nullable this.imageFile,
-      @nullable this.food,
+      @nullable this.menu,
       @required this.record})
       : assert(isProcessing != null),
         assert(isSearching != null),
@@ -225,9 +225,45 @@ class _$_RecordFormState implements _RecordFormState {
   final File imageFile;
   @override
   @nullable
-  final Food food;
+  final Menu menu;
   @override
   final Record record;
+
+  bool _didcanEditName = false;
+  bool _canEditName;
+
+  @override
+  bool get canEditName {
+    if (_didcanEditName == false) {
+      _didcanEditName = true;
+      _canEditName = menu == null;
+    }
+    return _canEditName;
+  }
+
+  bool _didcanEditCarbGramPerUnit = false;
+  bool _canEditCarbGramPerUnit;
+
+  @override
+  bool get canEditCarbGramPerUnit {
+    if (_didcanEditCarbGramPerUnit == false) {
+      _didcanEditCarbGramPerUnit = true;
+      _canEditCarbGramPerUnit = menu == null;
+    }
+    return _canEditCarbGramPerUnit;
+  }
+
+  bool _didcanEditUnit = false;
+  bool _canEditUnit;
+
+  @override
+  bool get canEditUnit {
+    if (_didcanEditUnit == false) {
+      _didcanEditUnit = true;
+      _canEditUnit = menu == null;
+    }
+    return _canEditUnit;
+  }
 
   bool _didcanSubmitForm = false;
   bool _canSubmitForm;
@@ -236,7 +272,7 @@ class _$_RecordFormState implements _RecordFormState {
   bool get canSubmitForm {
     if (_didcanSubmitForm == false) {
       _didcanSubmitForm = true;
-      _canSubmitForm = record.name.isNotEmpty;
+      _canSubmitForm = record.name.isNotEmpty && record.unit.isNotEmpty;
     }
     return _canSubmitForm;
   }
@@ -255,7 +291,7 @@ class _$_RecordFormState implements _RecordFormState {
 
   @override
   String toString() {
-    return 'RecordFormState(isProcessing: $isProcessing, isSearching: $isSearching, error: $error, user: $user, imageFile: $imageFile, food: $food, record: $record, canSubmitForm: $canSubmitForm, isUpdate: $isUpdate)';
+    return 'RecordFormState(isProcessing: $isProcessing, isSearching: $isSearching, error: $error, user: $user, imageFile: $imageFile, menu: $menu, record: $record, canEditName: $canEditName, canEditCarbGramPerUnit: $canEditCarbGramPerUnit, canEditUnit: $canEditUnit, canSubmitForm: $canSubmitForm, isUpdate: $isUpdate)';
   }
 
   @override
@@ -275,8 +311,8 @@ class _$_RecordFormState implements _RecordFormState {
             (identical(other.imageFile, imageFile) ||
                 const DeepCollectionEquality()
                     .equals(other.imageFile, imageFile)) &&
-            (identical(other.food, food) ||
-                const DeepCollectionEquality().equals(other.food, food)) &&
+            (identical(other.menu, menu) ||
+                const DeepCollectionEquality().equals(other.menu, menu)) &&
             (identical(other.record, record) ||
                 const DeepCollectionEquality().equals(other.record, record)));
   }
@@ -289,7 +325,7 @@ class _$_RecordFormState implements _RecordFormState {
       const DeepCollectionEquality().hash(error) ^
       const DeepCollectionEquality().hash(user) ^
       const DeepCollectionEquality().hash(imageFile) ^
-      const DeepCollectionEquality().hash(food) ^
+      const DeepCollectionEquality().hash(menu) ^
       const DeepCollectionEquality().hash(record);
 
   @JsonKey(ignore: true)
@@ -305,7 +341,7 @@ abstract class _RecordFormState implements RecordFormState {
       @nullable Object error,
       @required User user,
       @nullable File imageFile,
-      @nullable Food food,
+      @nullable Menu menu,
       @required Record record}) = _$_RecordFormState;
 
   @override
@@ -322,7 +358,7 @@ abstract class _RecordFormState implements RecordFormState {
   File get imageFile;
   @override
   @nullable
-  Food get food;
+  Menu get menu;
   @override
   Record get record;
   @override

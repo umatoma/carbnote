@@ -17,17 +17,22 @@ abstract class Record with _$Record {
   factory Record({
     @nullable String id,
     @required String userID,
-    @required RecordTimeType timeType,
-    @required String name,
+    @Default(RecordTimeType.breakfast) RecordTimeType timeType,
+    @Default('') String name,
+    @Default('') String note,
     @nullable String imageURL,
-    @required int carbGram,
-    @required String note,
+    @Default('') String unit,
+    @Default(0) double carbGramPerUnit,
+    @Default(1.0) double intakePercent,
     @required DateTime recordedAt,
     @nullable DateTime updatedAt,
     @nullable DateTime createdAt,
   }) = _Record;
 
   Record._();
+
+  @late
+  int get carbGram => (carbGramPerUnit * intakePercent).round();
 
   bool getIsOverGoalCarbGram(int goalCarbGram) {
     return goalCarbGram > goalCarbGram;
@@ -74,11 +79,15 @@ abstract class RecordsSummary implements _$RecordsSummary {
       records.map((record) => record.carbGram).fold(0, (a, b) => a + b);
 
   @late
+  int get recordedDays =>
+      records.map((record) => record.recordedAt.startOfDay()).toSet().length;
+
+  @late
   int get remainCarbGram => goalCarbGram - totalCarbGram;
 
   @late
-  int get averageCarbGram =>
-      records.isEmpty ? 0 : totalCarbGram ~/ records.length;
+  int get averageCarbGramPerDay =>
+      records.isEmpty ? 0 : totalCarbGram ~/ recordedDays;
 
   @late
   int get maxByTotalAndGoalCarbGram => max(totalCarbGram, goalCarbGram);

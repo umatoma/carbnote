@@ -76,6 +76,8 @@ class CnSecondaryButton extends StatelessWidget {
     Key key,
     @required this.onPressed,
     @required this.child,
+    this.leading,
+    this.trailing,
     this.width = double.infinity,
     this.height = 48,
     this.selected = false,
@@ -83,6 +85,8 @@ class CnSecondaryButton extends StatelessWidget {
 
   final void Function() onPressed;
   final Widget child;
+  final Widget leading;
+  final Widget trailing;
   final double width;
   final double height;
   final bool selected;
@@ -117,7 +121,14 @@ class CnSecondaryButton extends StatelessWidget {
                     : Colors.white,
               ),
             ),
-        child: child,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            leading ?? const SizedBox(),
+            child,
+            trailing ?? const SizedBox(),
+          ],
+        ),
       ),
     );
   }

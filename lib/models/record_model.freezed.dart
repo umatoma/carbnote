@@ -17,11 +17,13 @@ class _$RecordTearOff {
   _Record call(
       {@nullable String id,
       @required String userID,
-      @required RecordTimeType timeType,
-      @required String name,
+      RecordTimeType timeType = RecordTimeType.breakfast,
+      String name = '',
+      String note = '',
       @nullable String imageURL,
-      @required int carbGram,
-      @required String note,
+      String unit = '',
+      double carbGramPerUnit = 0,
+      double intakePercent = 1.0,
       @required DateTime recordedAt,
       @nullable DateTime updatedAt,
       @nullable DateTime createdAt}) {
@@ -30,9 +32,11 @@ class _$RecordTearOff {
       userID: userID,
       timeType: timeType,
       name: name,
-      imageURL: imageURL,
-      carbGram: carbGram,
       note: note,
+      imageURL: imageURL,
+      unit: unit,
+      carbGramPerUnit: carbGramPerUnit,
+      intakePercent: intakePercent,
       recordedAt: recordedAt,
       updatedAt: updatedAt,
       createdAt: createdAt,
@@ -51,10 +55,12 @@ mixin _$Record {
   String get userID;
   RecordTimeType get timeType;
   String get name;
+  String get note;
   @nullable
   String get imageURL;
-  int get carbGram;
-  String get note;
+  String get unit;
+  double get carbGramPerUnit;
+  double get intakePercent;
   DateTime get recordedAt;
   @nullable
   DateTime get updatedAt;
@@ -74,9 +80,11 @@ abstract class $RecordCopyWith<$Res> {
       String userID,
       RecordTimeType timeType,
       String name,
-      @nullable String imageURL,
-      int carbGram,
       String note,
+      @nullable String imageURL,
+      String unit,
+      double carbGramPerUnit,
+      double intakePercent,
       DateTime recordedAt,
       @nullable DateTime updatedAt,
       @nullable DateTime createdAt});
@@ -96,9 +104,11 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
     Object userID = freezed,
     Object timeType = freezed,
     Object name = freezed,
-    Object imageURL = freezed,
-    Object carbGram = freezed,
     Object note = freezed,
+    Object imageURL = freezed,
+    Object unit = freezed,
+    Object carbGramPerUnit = freezed,
+    Object intakePercent = freezed,
     Object recordedAt = freezed,
     Object updatedAt = freezed,
     Object createdAt = freezed,
@@ -109,9 +119,15 @@ class _$RecordCopyWithImpl<$Res> implements $RecordCopyWith<$Res> {
       timeType:
           timeType == freezed ? _value.timeType : timeType as RecordTimeType,
       name: name == freezed ? _value.name : name as String,
-      imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
-      carbGram: carbGram == freezed ? _value.carbGram : carbGram as int,
       note: note == freezed ? _value.note : note as String,
+      imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
+      unit: unit == freezed ? _value.unit : unit as String,
+      carbGramPerUnit: carbGramPerUnit == freezed
+          ? _value.carbGramPerUnit
+          : carbGramPerUnit as double,
+      intakePercent: intakePercent == freezed
+          ? _value.intakePercent
+          : intakePercent as double,
       recordedAt:
           recordedAt == freezed ? _value.recordedAt : recordedAt as DateTime,
       updatedAt:
@@ -132,9 +148,11 @@ abstract class _$RecordCopyWith<$Res> implements $RecordCopyWith<$Res> {
       String userID,
       RecordTimeType timeType,
       String name,
-      @nullable String imageURL,
-      int carbGram,
       String note,
+      @nullable String imageURL,
+      String unit,
+      double carbGramPerUnit,
+      double intakePercent,
       DateTime recordedAt,
       @nullable DateTime updatedAt,
       @nullable DateTime createdAt});
@@ -155,9 +173,11 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
     Object userID = freezed,
     Object timeType = freezed,
     Object name = freezed,
-    Object imageURL = freezed,
-    Object carbGram = freezed,
     Object note = freezed,
+    Object imageURL = freezed,
+    Object unit = freezed,
+    Object carbGramPerUnit = freezed,
+    Object intakePercent = freezed,
     Object recordedAt = freezed,
     Object updatedAt = freezed,
     Object createdAt = freezed,
@@ -168,9 +188,15 @@ class __$RecordCopyWithImpl<$Res> extends _$RecordCopyWithImpl<$Res>
       timeType:
           timeType == freezed ? _value.timeType : timeType as RecordTimeType,
       name: name == freezed ? _value.name : name as String,
-      imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
-      carbGram: carbGram == freezed ? _value.carbGram : carbGram as int,
       note: note == freezed ? _value.note : note as String,
+      imageURL: imageURL == freezed ? _value.imageURL : imageURL as String,
+      unit: unit == freezed ? _value.unit : unit as String,
+      carbGramPerUnit: carbGramPerUnit == freezed
+          ? _value.carbGramPerUnit
+          : carbGramPerUnit as double,
+      intakePercent: intakePercent == freezed
+          ? _value.intakePercent
+          : intakePercent as double,
       recordedAt:
           recordedAt == freezed ? _value.recordedAt : recordedAt as DateTime,
       updatedAt:
@@ -186,19 +212,23 @@ class _$_Record extends _Record {
   _$_Record(
       {@nullable this.id,
       @required this.userID,
-      @required this.timeType,
-      @required this.name,
+      this.timeType = RecordTimeType.breakfast,
+      this.name = '',
+      this.note = '',
       @nullable this.imageURL,
-      @required this.carbGram,
-      @required this.note,
+      this.unit = '',
+      this.carbGramPerUnit = 0,
+      this.intakePercent = 1.0,
       @required this.recordedAt,
       @nullable this.updatedAt,
       @nullable this.createdAt})
       : assert(userID != null),
         assert(timeType != null),
         assert(name != null),
-        assert(carbGram != null),
         assert(note != null),
+        assert(unit != null),
+        assert(carbGramPerUnit != null),
+        assert(intakePercent != null),
         assert(recordedAt != null),
         super._();
 
@@ -207,17 +237,27 @@ class _$_Record extends _Record {
   final String id;
   @override
   final String userID;
+  @JsonKey(defaultValue: RecordTimeType.breakfast)
   @override
   final RecordTimeType timeType;
+  @JsonKey(defaultValue: '')
   @override
   final String name;
+  @JsonKey(defaultValue: '')
+  @override
+  final String note;
   @override
   @nullable
   final String imageURL;
+  @JsonKey(defaultValue: '')
   @override
-  final int carbGram;
+  final String unit;
+  @JsonKey(defaultValue: 0)
   @override
-  final String note;
+  final double carbGramPerUnit;
+  @JsonKey(defaultValue: 1.0)
+  @override
+  final double intakePercent;
   @override
   final DateTime recordedAt;
   @override
@@ -227,9 +267,21 @@ class _$_Record extends _Record {
   @nullable
   final DateTime createdAt;
 
+  bool _didcarbGram = false;
+  int _carbGram;
+
+  @override
+  int get carbGram {
+    if (_didcarbGram == false) {
+      _didcarbGram = true;
+      _carbGram = (carbGramPerUnit * intakePercent).round();
+    }
+    return _carbGram;
+  }
+
   @override
   String toString() {
-    return 'Record(id: $id, userID: $userID, timeType: $timeType, name: $name, imageURL: $imageURL, carbGram: $carbGram, note: $note, recordedAt: $recordedAt, updatedAt: $updatedAt, createdAt: $createdAt)';
+    return 'Record(id: $id, userID: $userID, timeType: $timeType, name: $name, note: $note, imageURL: $imageURL, unit: $unit, carbGramPerUnit: $carbGramPerUnit, intakePercent: $intakePercent, recordedAt: $recordedAt, updatedAt: $updatedAt, createdAt: $createdAt, carbGram: $carbGram)';
   }
 
   @override
@@ -245,14 +297,19 @@ class _$_Record extends _Record {
                     .equals(other.timeType, timeType)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.note, note) ||
+                const DeepCollectionEquality().equals(other.note, note)) &&
             (identical(other.imageURL, imageURL) ||
                 const DeepCollectionEquality()
                     .equals(other.imageURL, imageURL)) &&
-            (identical(other.carbGram, carbGram) ||
+            (identical(other.unit, unit) ||
+                const DeepCollectionEquality().equals(other.unit, unit)) &&
+            (identical(other.carbGramPerUnit, carbGramPerUnit) ||
                 const DeepCollectionEquality()
-                    .equals(other.carbGram, carbGram)) &&
-            (identical(other.note, note) ||
-                const DeepCollectionEquality().equals(other.note, note)) &&
+                    .equals(other.carbGramPerUnit, carbGramPerUnit)) &&
+            (identical(other.intakePercent, intakePercent) ||
+                const DeepCollectionEquality()
+                    .equals(other.intakePercent, intakePercent)) &&
             (identical(other.recordedAt, recordedAt) ||
                 const DeepCollectionEquality()
                     .equals(other.recordedAt, recordedAt)) &&
@@ -271,9 +328,11 @@ class _$_Record extends _Record {
       const DeepCollectionEquality().hash(userID) ^
       const DeepCollectionEquality().hash(timeType) ^
       const DeepCollectionEquality().hash(name) ^
-      const DeepCollectionEquality().hash(imageURL) ^
-      const DeepCollectionEquality().hash(carbGram) ^
       const DeepCollectionEquality().hash(note) ^
+      const DeepCollectionEquality().hash(imageURL) ^
+      const DeepCollectionEquality().hash(unit) ^
+      const DeepCollectionEquality().hash(carbGramPerUnit) ^
+      const DeepCollectionEquality().hash(intakePercent) ^
       const DeepCollectionEquality().hash(recordedAt) ^
       const DeepCollectionEquality().hash(updatedAt) ^
       const DeepCollectionEquality().hash(createdAt);
@@ -289,11 +348,13 @@ abstract class _Record extends Record {
   factory _Record(
       {@nullable String id,
       @required String userID,
-      @required RecordTimeType timeType,
-      @required String name,
+      RecordTimeType timeType,
+      String name,
+      String note,
       @nullable String imageURL,
-      @required int carbGram,
-      @required String note,
+      String unit,
+      double carbGramPerUnit,
+      double intakePercent,
       @required DateTime recordedAt,
       @nullable DateTime updatedAt,
       @nullable DateTime createdAt}) = _$_Record;
@@ -308,12 +369,16 @@ abstract class _Record extends Record {
   @override
   String get name;
   @override
+  String get note;
+  @override
   @nullable
   String get imageURL;
   @override
-  int get carbGram;
+  String get unit;
   @override
-  String get note;
+  double get carbGramPerUnit;
+  @override
+  double get intakePercent;
   @override
   DateTime get recordedAt;
   @override
@@ -487,6 +552,21 @@ class _$_RecordsSummary extends _RecordsSummary {
     return _totalCarbGram;
   }
 
+  bool _didrecordedDays = false;
+  int _recordedDays;
+
+  @override
+  int get recordedDays {
+    if (_didrecordedDays == false) {
+      _didrecordedDays = true;
+      _recordedDays = records
+          .map((record) => record.recordedAt.startOfDay())
+          .toSet()
+          .length;
+    }
+    return _recordedDays;
+  }
+
   bool _didremainCarbGram = false;
   int _remainCarbGram;
 
@@ -499,16 +579,17 @@ class _$_RecordsSummary extends _RecordsSummary {
     return _remainCarbGram;
   }
 
-  bool _didaverageCarbGram = false;
-  int _averageCarbGram;
+  bool _didaverageCarbGramPerDay = false;
+  int _averageCarbGramPerDay;
 
   @override
-  int get averageCarbGram {
-    if (_didaverageCarbGram == false) {
-      _didaverageCarbGram = true;
-      _averageCarbGram = records.isEmpty ? 0 : totalCarbGram ~/ records.length;
+  int get averageCarbGramPerDay {
+    if (_didaverageCarbGramPerDay == false) {
+      _didaverageCarbGramPerDay = true;
+      _averageCarbGramPerDay =
+          records.isEmpty ? 0 : totalCarbGram ~/ recordedDays;
     }
-    return _averageCarbGram;
+    return _averageCarbGramPerDay;
   }
 
   bool _didmaxByTotalAndGoalCarbGram = false;
@@ -551,7 +632,7 @@ class _$_RecordsSummary extends _RecordsSummary {
 
   @override
   String toString() {
-    return 'RecordsSummary(goalCarbGram: $goalCarbGram, records: $records, summariesGroupByRecordedDay: $summariesGroupByRecordedDay, summariesGroupByRecordedMonth: $summariesGroupByRecordedMonth, totalCarbGram: $totalCarbGram, remainCarbGram: $remainCarbGram, averageCarbGram: $averageCarbGram, maxByTotalAndGoalCarbGram: $maxByTotalAndGoalCarbGram, isOverGoalCarbGram: $isOverGoalCarbGram, achievedGoalCarbGramDays: $achievedGoalCarbGramDays)';
+    return 'RecordsSummary(goalCarbGram: $goalCarbGram, records: $records, summariesGroupByRecordedDay: $summariesGroupByRecordedDay, summariesGroupByRecordedMonth: $summariesGroupByRecordedMonth, totalCarbGram: $totalCarbGram, recordedDays: $recordedDays, remainCarbGram: $remainCarbGram, averageCarbGramPerDay: $averageCarbGramPerDay, maxByTotalAndGoalCarbGram: $maxByTotalAndGoalCarbGram, isOverGoalCarbGram: $isOverGoalCarbGram, achievedGoalCarbGramDays: $achievedGoalCarbGramDays)';
   }
 
   @override

@@ -31,7 +31,6 @@ class RecordFormScreen extends HookWidget {
     return CnProgressContainer(
       isProgressing: isProcessing,
       child: CnScaffold(
-        resizeToAvoidBottomInset: true,
         appBar: CnNavBar(
           leading: CnScaleSwitcher(
             child: isSearching
@@ -72,7 +71,7 @@ class RecordFormScreen extends HookWidget {
         ),
         body: CnFadeSwitcher(
           child: isSearching
-              ? const FoodSearch(
+              ? const MenuSearch(
                   key: ValueKey('FoodSearch'),
                 )
               : Stack(
@@ -91,13 +90,13 @@ class RecordFormScreen extends HookWidget {
   }
 }
 
-class FoodSearch extends HookWidget {
-  const FoodSearch({Key key}) : super(key: key);
+class MenuSearch extends HookWidget {
+  const MenuSearch({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _record = useProvider(currentRecordProvider);
-    final asyncFoods = useProvider(foodsProvider);
+    final asyncMenus = useProvider(menusProvider);
 
     return WillPopScope(
       onWillPop: () async {
@@ -119,7 +118,7 @@ class FoodSearch extends HookWidget {
           ),
           const SizedBox(height: 16),
           Expanded(
-            child: asyncFoods.maybeWhen(
+            child: asyncMenus.maybeWhen(
               error: (e, stackTrace) {
                 print(e);
                 print(stackTrace);
@@ -134,36 +133,33 @@ class FoodSearch extends HookWidget {
                 );
               },
               orElse: () {
-                final foods = asyncFoods.data?.value ?? [];
+                final menus = asyncMenus.data?.value ?? [];
                 return ListView(
                   children: [
-                    for (final food in foods) ...[
+                    for (final menu in menus) ...[
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 32),
                         child: CnListTile(
                           onTap: () {
                             context
                                 .read(recordFormStateProvider(_record))
-                                .setFood(food);
+                                .setMenu(menu);
                             context
                                 .read(recordFormStateProvider(_record))
                                 .setIsSearching(false);
                           },
-                          title: Text(
-                            food.name,
-                            style: Theme.of(context).textTheme.bodyText2,
-                            maxLines: 2,
-                          ),
+                          title: Text(menu.name),
+                          subtitle: Text(menu.unit),
                           trailing: SizedBox(
                             width: 64,
                             child: Column(
                               children: [
                                 Text(
-                                  '${food.carbGram}g',
+                                  '${NumberFormat('##0.0').format(menu.carbGramPerUnit)}g',
                                   style: Theme.of(context).textTheme.subtitle1,
                                 ),
                                 Text(
-                                  '糖質/100g',
+                                  '糖質',
                                   style: Theme.of(context).textTheme.caption,
                                 ),
                               ],
@@ -198,156 +194,191 @@ class RecordFormBody extends HookWidget {
         const SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Hero(
-            tag: 'RecordImage_${state.record.id}',
-            child: Center(
-              child: CnImageField.fileOrURL(
-                onPressed: () => context
-                    .read(recordFormStateProvider(_record))
-                    .pickImageFile(),
-                icon: CupertinoIcons.photo,
-                imageURL: state.record.imageURL,
-                imageFile: state.imageFile,
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: CnTextField(
-            onChanged: (value) =>
-                context.read(recordFormStateProvider(_record)).setName(value),
-            initialValue: state.record.name,
-            hintText: '名前',
-            prefixIcon: CupertinoIcons.pencil,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: CnTextField(
-            onChanged: (value) =>
-                context.read(recordFormStateProvider(_record)).setNote(value),
-            initialValue: state.record.note,
-            hintText: 'メモ',
-            prefixIcon: CupertinoIcons.pencil,
-          ),
-        ),
-        if (state.food != null) ...[
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: Text(
-                      '食べた量',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  flex: 2,
-                  child: CnGramField(
-                    onChanged: (value) => context
-                        .read(recordFormStateProvider(_record))
-                        .setIntakeGram(value),
-                    gram: state.food.intakeGram,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: Text(
-                      '糖質',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  flex: 2,
-                  child: Center(
-                    child: Text('${state.record.carbGram}g'),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-              ],
-            ),
-          ),
-        ],
-        if (state.food == null) ...[
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Center(
-                    child: Text(
-                      '糖質',
-                      style: Theme.of(context).textTheme.caption,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  flex: 2,
-                  child: CnGramField(
-                    onChanged: (value) => context
-                        .read(recordFormStateProvider(_record))
-                        .setCarbGram(value),
-                    gram: state.record.carbGram,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-              ],
-            ),
-          ),
-        ],
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Row(
             children: [
-              for (final type in timeTypes) ...[
-                Expanded(
-                  child: CnSecondaryButton(
+              Hero(
+                tag: 'RecordImage_${state.record.id}',
+                child: Center(
+                  child: CnImageField.fileOrURL(
                     onPressed: () => context
                         .read(recordFormStateProvider(_record))
-                        .setTimeType(type),
-                    selected: type == state.record.timeType,
-                    child: Text(CnStr.recordTimeType(type)),
+                        .pickImageFile(),
+                    icon: CupertinoIcons.photo,
+                    imageURL: state.record.imageURL,
+                    imageFile: state.imageFile,
                   ),
                 ),
-                if (type != timeTypes.last) const SizedBox(width: 8),
-              ],
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '糖質',
+                          style: Theme.of(context)
+                              .textTheme
+                              .caption
+                              .apply(color: Theme.of(context).primaryColor),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${state.record.carbGram}g',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headline6
+                              .apply(color: Theme.of(context).primaryColor),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      '${state.record.unit} (x${NumberFormat('#0.0').format(state.record.intakePercent)})',
+                      style: Theme.of(context).textTheme.caption,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('名前'),
+              const SizedBox(height: 8),
+              CnTextField(
+                onChanged: (value) => context
+                    .read(recordFormStateProvider(_record))
+                    .setName(value),
+                initialValue: state.record.name,
+                readOnly: state.canEditName == false,
+                hintText: '名前',
+                prefixIcon: CupertinoIcons.pencil,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('糖質'),
+              const SizedBox(height: 8),
+              CnSlider(
+                onChanged: (value) => context
+                    .read(recordFormStateProvider(_record))
+                    .setCarbGramPerUnit(value),
+                value: state.record.carbGramPerUnit,
+                label:
+                    '${NumberFormat('##0.0').format(state.record.carbGramPerUnit)}g',
+                readOnly: state.canEditCarbGramPerUnit == false,
+                min: 0.0,
+                max: 200.0,
+                divisions: 200.0 ~/ 0.5,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('単位'),
+              const SizedBox(height: 8),
+              CnTextField(
+                onChanged: (value) => context
+                    .read(recordFormStateProvider(_record))
+                    .setUnit(value),
+                readOnly: state.canEditUnit == false,
+                initialValue: state.record.unit,
+                hintText: '1個',
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('食べた量'),
+              SizedBox(
+                width: double.infinity,
+                child: CnSlider(
+                  onChanged: (value) => context
+                      .read(recordFormStateProvider(_record))
+                      .setIntakePercent(value),
+                  value: state.record.intakePercent,
+                  label:
+                      'x${NumberFormat('#0.00').format(state.record.intakePercent)}',
+                  min: 0.0,
+                  max: 10.0,
+                  divisions: 10.00 ~/ 0.25,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '日時',
+                style: Theme.of(context).textTheme.subtitle2,
+              ),
+              const SizedBox(height: 8),
+              CnSecondaryButton(
+                onPressed: () async {
+                  final date = await showDatePicker(
+                    context: context,
+                    initialDate: state.record.recordedAt,
+                    firstDate:
+                        DateTime.now().subtract(const Duration(days: 365)),
+                    lastDate: DateTime.now().add(const Duration(days: 1)),
+                  );
+                  if (date != null) {
+                    context
+                        .read(recordFormStateProvider(_record))
+                        .setRecordedAt(date);
+                  }
+                },
+                leading: const Icon(CupertinoIcons.calendar),
+                child: Text(
+                  DateFormat('MM月dd日').format(state.record.recordedAt),
+                ),
+                trailing: const SizedBox(width: 32),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  for (final type in timeTypes) ...[
+                    Expanded(
+                      child: CnSecondaryButton(
+                        onPressed: () => context
+                            .read(recordFormStateProvider(_record))
+                            .setTimeType(type),
+                        selected: type == state.record.timeType,
+                        child: Text(CnStr.recordTimeType(type)),
+                      ),
+                    ),
+                    if (type != timeTypes.last) const SizedBox(width: 8),
+                  ],
+                ],
+              ),
             ],
           ),
         ),
@@ -364,41 +395,6 @@ class RecordFormBody extends HookWidget {
             ),
           ),
         ],
-        const SizedBox(height: 16),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Row(
-            children: [
-              const SizedBox(width: 32),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    DateFormat('MM月dd日').format(state.record.recordedAt),
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-              ),
-              CnIconButton(
-                onPressed: () async {
-                  final date = await showDatePicker(
-                    context: context,
-                    initialDate: state.record.recordedAt,
-                    firstDate:
-                        DateTime.now().subtract(const Duration(days: 365)),
-                    lastDate: DateTime.now().add(const Duration(days: 1)),
-                  );
-                  if (date != null) {
-                    context
-                        .read(recordFormStateProvider(_record))
-                        .setRecordedAt(date);
-                  }
-                },
-                padding: const EdgeInsets.all(4),
-                icon: const Icon(CupertinoIcons.calendar),
-              ),
-            ],
-          ),
-        ),
         const SizedBox(height: 16),
         SizedBox(height: state.isUpdate ? 160 : 96),
       ],
