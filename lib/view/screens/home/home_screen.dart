@@ -222,17 +222,17 @@ class HomeRecordsByTimeType extends HookWidget {
                   ),
                 for (final Record record in records)
                   CnRecordListItem(
-                    onTap: () => Navigator.of(context).push(
-                      CupertinoPageRoute<void>(
-                        builder: (_) => ProviderScope(
-                          overrides: [
-                            currentRecordProvider.overrideWithValue(record),
-                          ],
-                          child: const RecordFormScreen(),
+                    onTap: () async {
+                      context
+                          .read(formControllerProvider)
+                          .setCurrentRecordAndMenu(record, null);
+                      await Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) => const RecordFormScreen(),
+                          fullscreenDialog: true,
                         ),
-                        fullscreenDialog: true,
-                      ),
-                    ),
+                      );
+                    },
                     key: ValueKey(record),
                     record: record,
                   ),

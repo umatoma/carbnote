@@ -9,51 +9,54 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:stream_transform/stream_transform.dart';
 
 part 'record_form_state.freezed.dart';
 
-final currentRecordProvider = ScopedProvider<Record>((ref) {
+final recordStateProvider = StateProvider<Record>((ref) {
   return null;
 });
 
-final recordFormStateProvider = StateNotifierProvider.autoDispose
-    .family<RecordFormStateController, Record>((ref, record) {
-  return RecordFormStateController(
-    ref.read,
-    record: record,
+final menuStateProvider = StateProvider<Menu>((ref) {
+  return null;
+});
+
+final formStateProvider = StateProvider.autoDispose((ref) {
+  final user = ref.read(currentUserProvider);
+  final menu = ref.read(menuStateProvider).state;
+  final record = ref.read(recordStateProvider).state;
+  return RecordFormState(
+    isProcessing: false,
+    user: user,
+    record: record ??
+        Record(
+          userID: user.id,
+          timeType: RecordTimeType.breakfast,
+          name: menu?.name ?? '',
+          unit: menu?.unit ?? '1個',
+          carbGramPerUnit: menu?.carbGramPerUnit ?? 0,
+          recordedAt: DateTime.now(),
+        ),
+    menu: menu,
   );
 });
 
-final searchControllerProvider = Provider.autoDispose((ref) {
-  return StreamController<String>();
-});
-
-final menusProvider = StreamProvider.autoDispose((ref) {
-  final menuRepo = ref.read(menuRepoProvider);
-  return ref
-      .watch(searchControllerProvider)
-      .stream
-      .debounce(const Duration(seconds: 1))
-      .map((intput) => intput.trim())
-      .asyncMap(
-        (input) => input.isEmpty
-            ? Future.value(<Menu>[])
-            : menuRepo.searchListByName(input),
-      );
+final formControllerProvider = Provider.autoDispose((ref) {
+  return RecordFormController(ref.read);
 });
 
 @freezed
 abstract class RecordFormState with _$RecordFormState {
   factory RecordFormState({
     @required bool isProcessing,
-    @required bool isSearching,
     @nullable Object error,
     @required User user,
     @nullable File imageFile,
     @nullable Menu menu,
     @required Record record,
   }) = _RecordFormState;
+
+  @late
+  bool get canReCustomize => menu != null;
 
   @late
   bool get canEditName => menu == null;
@@ -71,49 +74,22 @@ abstract class RecordFormState with _$RecordFormState {
   bool get isUpdate => record.id != null;
 }
 
-class RecordFormStateController extends StateNotifier<RecordFormState> {
-  RecordFormStateController(
-    this.read, {
-    Record record,
-  }) : super(RecordFormState(
-          isProcessing: false,
-          isSearching: false,
-          user: read(currentUserProvider),
-          record: record ??
-              Record(
-                userID: read(currentUserProvider).id,
-                timeType: RecordTimeType.breakfast,
-                unit: '1個',
-                recordedAt: DateTime.now(),
-              ),
-        )) {
-    () async {
-      if (state.record.id != null) {
-        state = state.copyWith(
-          record: await read(recordRepoProvider).getOne(
-            state.record.id,
-            state.user.id,
-          ),
-        );
-      }
-    }();
-  }
+class RecordFormController {
+  const RecordFormController(this.read);
 
   final Reader read;
 
-  void setIsSearching(bool value) {
-    state = state.copyWith(isSearching: value);
+  RecordFormState get state => read(formStateProvider).state;
+
+  set state(RecordFormState value) => read(formStateProvider).state = value;
+
+  void setCurrentRecordAndMenu(Record record, Menu menu) {
+    read(recordStateProvider).state = record;
+    read(menuStateProvider).state = menu;
   }
 
-  void setMenu(Menu value) {
-    state = state.copyWith(
-      menu: value,
-      record: state.record.copyWith(
-        name: value.name,
-        unit: value.unit,
-        carbGramPerUnit: value.carbGramPerUnit,
-      ),
-    );
+  void unsetMenu() {
+    state = state.copyWith(menu: null);
   }
 
   void setCarbGramPerUnit(double value) {
@@ -191,7 +167,7 @@ class RecordFormStateController extends StateNotifier<RecordFormState> {
       }
 
       state = state.copyWith(isProcessing: false);
-      read(navKeyProvider).currentState.pop();
+      read(navKeyProvider).currentState.popUntil((route) => route.isFirst);
     } catch (e, stackTrace) {
       setError(e, stackTrace);
       state = state.copyWith(isProcessing: false);
@@ -205,7 +181,7 @@ class RecordFormStateController extends StateNotifier<RecordFormState> {
       await recordRepo.delete(state.record);
 
       state = state.copyWith(isProcessing: false);
-      read(navKeyProvider).currentState.pop();
+      read(navKeyProvider).currentState.popUntil((route) => route.isFirst);
     } catch (e, stackTrace) {
       setError(e, stackTrace);
       state = state.copyWith(isProcessing: false);

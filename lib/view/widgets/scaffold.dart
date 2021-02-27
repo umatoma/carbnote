@@ -1,5 +1,5 @@
 import 'package:carbnote/view/screens/home/home_screen.dart';
-import 'package:carbnote/view/screens/record/record_form_screen.dart';
+import 'package:carbnote/view/screens/menu/menu_list_screen.dart';
 import 'package:carbnote/view/screens/record/record_summary_screen.dart';
 import 'package:carbnote/view/screens/user/user_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,7 +52,7 @@ class CnFavButton extends StatelessWidget {
     return FloatingActionButton(
       onPressed: () => Navigator.of(context).push(
         CupertinoPageRoute<void>(
-          builder: (_) => const RecordFormScreen(),
+          builder: (_) => const MenuListScreen(),
           fullscreenDialog: true,
         ),
       ),

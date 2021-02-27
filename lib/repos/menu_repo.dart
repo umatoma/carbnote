@@ -35,9 +35,10 @@ class MenuRepo {
 
   Future<List<Menu>> searchListByName(String name) async {
     final db = await getDatabase();
+    final searchName = name.kanaToHira();
     final rows = await db.rawQuery(
-      'SELECT * FROM menus where name LIKE ? ORDER BY name LIMIT 100',
-      <String>['%$name%'],
+      'SELECT * FROM menus where search_name LIKE ? ORDER BY name LIMIT 100',
+      <String>['%$searchName%'],
     );
     final foods = rows.map((row) {
       return Menu(
@@ -49,5 +50,14 @@ class MenuRepo {
       );
     }).toList();
     return foods;
+  }
+}
+
+extension ExString on String {
+  String kanaToHira() {
+    return replaceAllMapped(
+      RegExp('[\u30a1-\u30f6]'),
+      (match) => String.fromCharCode(match.group(0).codeUnitAt(0) - 0x60),
+    );
   }
 }

@@ -16,7 +16,6 @@ class _$RecordFormStateTearOff {
 // ignore: unused_element
   _RecordFormState call(
       {@required bool isProcessing,
-      @required bool isSearching,
       @nullable Object error,
       @required User user,
       @nullable File imageFile,
@@ -24,7 +23,6 @@ class _$RecordFormStateTearOff {
       @required Record record}) {
     return _RecordFormState(
       isProcessing: isProcessing,
-      isSearching: isSearching,
       error: error,
       user: user,
       imageFile: imageFile,
@@ -41,7 +39,6 @@ const $RecordFormState = _$RecordFormStateTearOff();
 /// @nodoc
 mixin _$RecordFormState {
   bool get isProcessing;
-  bool get isSearching;
   @nullable
   Object get error;
   User get user;
@@ -62,7 +59,6 @@ abstract class $RecordFormStateCopyWith<$Res> {
       _$RecordFormStateCopyWithImpl<$Res>;
   $Res call(
       {bool isProcessing,
-      bool isSearching,
       @nullable Object error,
       User user,
       @nullable File imageFile,
@@ -86,7 +82,6 @@ class _$RecordFormStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object isProcessing = freezed,
-    Object isSearching = freezed,
     Object error = freezed,
     Object user = freezed,
     Object imageFile = freezed,
@@ -96,8 +91,6 @@ class _$RecordFormStateCopyWithImpl<$Res>
     return _then(_value.copyWith(
       isProcessing:
           isProcessing == freezed ? _value.isProcessing : isProcessing as bool,
-      isSearching:
-          isSearching == freezed ? _value.isSearching : isSearching as bool,
       error: error == freezed ? _value.error : error,
       user: user == freezed ? _value.user : user as User,
       imageFile: imageFile == freezed ? _value.imageFile : imageFile as File,
@@ -146,7 +139,6 @@ abstract class _$RecordFormStateCopyWith<$Res>
   @override
   $Res call(
       {bool isProcessing,
-      bool isSearching,
       @nullable Object error,
       User user,
       @nullable File imageFile,
@@ -175,7 +167,6 @@ class __$RecordFormStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object isProcessing = freezed,
-    Object isSearching = freezed,
     Object error = freezed,
     Object user = freezed,
     Object imageFile = freezed,
@@ -185,8 +176,6 @@ class __$RecordFormStateCopyWithImpl<$Res>
     return _then(_RecordFormState(
       isProcessing:
           isProcessing == freezed ? _value.isProcessing : isProcessing as bool,
-      isSearching:
-          isSearching == freezed ? _value.isSearching : isSearching as bool,
       error: error == freezed ? _value.error : error,
       user: user == freezed ? _value.user : user as User,
       imageFile: imageFile == freezed ? _value.imageFile : imageFile as File,
@@ -200,21 +189,17 @@ class __$RecordFormStateCopyWithImpl<$Res>
 class _$_RecordFormState implements _RecordFormState {
   _$_RecordFormState(
       {@required this.isProcessing,
-      @required this.isSearching,
       @nullable this.error,
       @required this.user,
       @nullable this.imageFile,
       @nullable this.menu,
       @required this.record})
       : assert(isProcessing != null),
-        assert(isSearching != null),
         assert(user != null),
         assert(record != null);
 
   @override
   final bool isProcessing;
-  @override
-  final bool isSearching;
   @override
   @nullable
   final Object error;
@@ -228,6 +213,18 @@ class _$_RecordFormState implements _RecordFormState {
   final Menu menu;
   @override
   final Record record;
+
+  bool _didcanReCustomize = false;
+  bool _canReCustomize;
+
+  @override
+  bool get canReCustomize {
+    if (_didcanReCustomize == false) {
+      _didcanReCustomize = true;
+      _canReCustomize = menu != null;
+    }
+    return _canReCustomize;
+  }
 
   bool _didcanEditName = false;
   bool _canEditName;
@@ -291,7 +288,7 @@ class _$_RecordFormState implements _RecordFormState {
 
   @override
   String toString() {
-    return 'RecordFormState(isProcessing: $isProcessing, isSearching: $isSearching, error: $error, user: $user, imageFile: $imageFile, menu: $menu, record: $record, canEditName: $canEditName, canEditCarbGramPerUnit: $canEditCarbGramPerUnit, canEditUnit: $canEditUnit, canSubmitForm: $canSubmitForm, isUpdate: $isUpdate)';
+    return 'RecordFormState(isProcessing: $isProcessing, error: $error, user: $user, imageFile: $imageFile, menu: $menu, record: $record, canReCustomize: $canReCustomize, canEditName: $canEditName, canEditCarbGramPerUnit: $canEditCarbGramPerUnit, canEditUnit: $canEditUnit, canSubmitForm: $canSubmitForm, isUpdate: $isUpdate)';
   }
 
   @override
@@ -301,9 +298,6 @@ class _$_RecordFormState implements _RecordFormState {
             (identical(other.isProcessing, isProcessing) ||
                 const DeepCollectionEquality()
                     .equals(other.isProcessing, isProcessing)) &&
-            (identical(other.isSearching, isSearching) ||
-                const DeepCollectionEquality()
-                    .equals(other.isSearching, isSearching)) &&
             (identical(other.error, error) ||
                 const DeepCollectionEquality().equals(other.error, error)) &&
             (identical(other.user, user) ||
@@ -321,7 +315,6 @@ class _$_RecordFormState implements _RecordFormState {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(isProcessing) ^
-      const DeepCollectionEquality().hash(isSearching) ^
       const DeepCollectionEquality().hash(error) ^
       const DeepCollectionEquality().hash(user) ^
       const DeepCollectionEquality().hash(imageFile) ^
@@ -337,7 +330,6 @@ class _$_RecordFormState implements _RecordFormState {
 abstract class _RecordFormState implements RecordFormState {
   factory _RecordFormState(
       {@required bool isProcessing,
-      @required bool isSearching,
       @nullable Object error,
       @required User user,
       @nullable File imageFile,
@@ -346,8 +338,6 @@ abstract class _RecordFormState implements RecordFormState {
 
   @override
   bool get isProcessing;
-  @override
-  bool get isSearching;
   @override
   @nullable
   Object get error;

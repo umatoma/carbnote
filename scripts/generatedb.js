@@ -8,6 +8,7 @@ const input = fs.readFileSync('./糖質一覧データ表.csv', 'utf-8');
 const rows = csvParse(input, { columns: false }).map((row) => ({
     category: row[0],
     name: row[1],
+    searchName: kanaToHira(row[1]),
     unit: row[2],
     carbGram: parseFloat(row[3]),
 })).filter((row) => row.category !== '');
@@ -28,19 +29,28 @@ db.serialize(() => {
         '  id INTEGER PRIMARY KEY AUTOINCREMENT,' +
         '  category STRING NOT NULL,' +
         '  name STRING NOT NULL,' +
+        '  search_name STRING NOT NULL,' +
         '  unit STRING NOT NULL,' +
         '  carb_gram_per_unit REAL NOT NULL' +
         ');',
     );
     for (const row of rows) {
         db.run(
-            'INSERT INTO menus (category, name, unit, carb_gram_per_unit) ' +
-            'VALUES (?, ?, ?, ?)',
+            'INSERT INTO menus (category, name, search_name, unit, carb_gram_per_unit) ' +
+            'VALUES (?, ?, ?, ?, ?)',
             row.category,
             row.name,
+            row.searchName,
             row.unit,
             row.carbGram,
         );
     }
 });
 db.close();
+
+function kanaToHira(str) {
+    return str.replace(/[\u30a1-\u30f6]/g, function (match) {
+        var chr = match.charCodeAt(0) - 0x60;
+        return String.fromCharCode(chr);
+    });
+}
