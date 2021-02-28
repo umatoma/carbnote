@@ -27,6 +27,12 @@ final menusControllerProvider = Provider.autoDispose((ref) {
   return MenusController(ref.read);
 });
 
+final myMenusStreamProvider = StreamProvider.autoDispose((ref) {
+  final myMenuRepo = ref.read(myMenuRepoProvider);
+  final user = ref.read(currentUserProvider);
+  return myMenuRepo.getList(user.id);
+});
+
 class MenusController {
   const MenusController(this.read);
 

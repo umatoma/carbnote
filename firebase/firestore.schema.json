@@ -16,10 +16,25 @@
                     "userID": "...",
                     "timeType": "breakfast|lunch|dinner|snack",
                     "name": "カレーライス",
-                    "imageURL": "https://exmaple.com/path/to/image",
-                    "carbGram": 50,
                     "note": "ABC店のカレーライス",
+                    "imageURL": "https://exmaple.com/path/to/image",
+                    "unit": "1食",
+                    "carbGramPerUnit": 50.0,
+                    "intakePercent": 1.0,
                     "recordedAt": "Timestamp",
+                    "createdAt": "Timestamp",
+                    "updatedAt": "Timestamp"
+                },
+                "collection": {}
+            },
+            "menus": {
+                "document": {
+                    "id": "...",
+                    "userID": "...",
+                    "name": "カレーライス",
+                    "imageURL": "https://exmaple.com/path/to/image",
+                    "unit": "1食",
+                    "carbGramPerUnit": 50.0,
                     "createdAt": "Timestamp",
                     "updatedAt": "Timestamp"
                 },

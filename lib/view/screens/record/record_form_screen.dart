@@ -75,15 +75,17 @@ class RecordFormBody extends HookWidget {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: Row(
             children: [
-              Hero(
-                tag: 'RecordImage_${state.record.id}',
-                child: Center(
-                  child: CnImageField.fileOrURL(
-                    onPressed: () =>
-                        context.read(formControllerProvider).pickImageFile(),
-                    icon: CupertinoIcons.photo,
-                    imageURL: state.record.imageURL,
-                    imageFile: state.imageFile,
+              Expanded(
+                child: Hero(
+                  tag: 'RecordImage_${state.record.id}',
+                  child: Center(
+                    child: CnImageField.fileOrURL(
+                      onPressed: () =>
+                          context.read(formControllerProvider).pickImageFile(),
+                      icon: CupertinoIcons.photo,
+                      imageURL: state.record.imageURL,
+                      imageFile: state.imageFile,
+                    ),
                   ),
                 ),
               ),

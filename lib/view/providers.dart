@@ -17,6 +17,7 @@ final menuRepoProvider = Provider.autoDispose((ref) {
   ref.onDispose(() => repo.dispose());
   return repo;
 });
+final myMenuRepoProvider = Provider((ref) => MyMenuRepo());
 
 // ---------- AuthUser ---------- //
 

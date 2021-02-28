@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:carbnote/models/menu_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -42,7 +43,7 @@ class MenuRepo {
     );
     final foods = rows.map((row) {
       return Menu(
-        id: row['id'] as int,
+        id: (row['id'] as int).toString(),
         category: row['category'] as String,
         name: row['name'] as String,
         unit: row['unit'] as String,
@@ -50,6 +51,89 @@ class MenuRepo {
       );
     }).toList();
     return foods;
+  }
+}
+
+class MyMenuRepo {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  Future<Menu> getOne(String id, String userID) async {
+    final doc = await firestore
+        .collection('users')
+        .doc(userID)
+        .collection('menus')
+        .doc(id)
+        .get();
+    return docToMenu(doc);
+  }
+
+  Stream<List<Menu>> getList(String userID) {
+    return firestore
+        .collection('users')
+        .doc(userID)
+        .collection('menus')
+        .orderBy('name')
+        .snapshots()
+        .map((query) => query.docs.map((doc) => docToMenu(doc)).toList());
+  }
+
+  Future<Menu> create(Menu value) async {
+    final ref = firestore
+        .collection('users')
+        .doc(value.userID)
+        .collection('menus')
+        .doc();
+    await ref.set(menuToData(value.copyWith(
+      id: ref.id,
+      updatedAt: DateTime.now(),
+      createdAt: DateTime.now(),
+    )));
+    return await getOne(ref.id, value.userID);
+  }
+
+  Future<Menu> update(Menu value) async {
+    final ref = firestore
+        .collection('users')
+        .doc(value.userID)
+        .collection('menus')
+        .doc(value.id);
+    await ref.update(menuToData(value.copyWith(
+      updatedAt: DateTime.now(),
+    )));
+    return await getOne(ref.id, value.userID);
+  }
+
+  Future<void> delete(Menu value) async {
+    final ref = firestore
+        .collection('users')
+        .doc(value.userID)
+        .collection('menus')
+        .doc(value.id);
+    await ref.delete();
+  }
+
+  Menu docToMenu(DocumentSnapshot doc) {
+    return Menu(
+      id: doc.id,
+      userID: doc['userID'] as String,
+      name: doc['name'] as String,
+      imageURL: doc['imageURL'] as String,
+      unit: doc['unit'] as String,
+      carbGramPerUnit: doc['carbGramPerUnit'] as double,
+    );
+  }
+
+  Map<String, dynamic> menuToData(Menu value) {
+    return <String, dynamic>{
+      'id': value.id,
+      'userID': value.userID,
+      'name': value.name,
+      'imageURL': value.imageURL,
+      'unit': value.unit,
+      'carbGramPerUnit': value.carbGramPerUnit,
+      'updatedAt': Timestamp.fromDate(value.updatedAt),
+      'createdAt': Timestamp.fromDate(value.createdAt),
+    };
   }
 }
 

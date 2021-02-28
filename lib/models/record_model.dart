@@ -12,6 +12,19 @@ enum RecordTimeType {
   snack,
 }
 
+RecordTimeType estimateTimeType(DateTime dateTime) {
+  if ([5, 6, 7, 8, 9, 10].contains(dateTime.hour)) {
+    return RecordTimeType.breakfast;
+  }
+  if ([11, 12, 13, 14].contains(dateTime.hour)) {
+    return RecordTimeType.lunch;
+  }
+  if ([18, 19, 20, 21, 22].contains(dateTime.hour)) {
+    return RecordTimeType.dinner;
+  }
+  return RecordTimeType.snack;
+}
+
 @freezed
 abstract class Record with _$Record {
   factory Record({

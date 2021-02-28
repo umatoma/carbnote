@@ -30,8 +30,9 @@ final formStateProvider = StateProvider.autoDispose((ref) {
     record: record ??
         Record(
           userID: user.id,
-          timeType: RecordTimeType.breakfast,
+          timeType: estimateTimeType(DateTime.now()),
           name: menu?.name ?? '',
+          imageURL: menu?.imageURL,
           unit: menu?.unit ?? '1個',
           carbGramPerUnit: menu?.carbGramPerUnit ?? 0,
           recordedAt: DateTime.now(),
@@ -90,6 +91,12 @@ class RecordFormController {
 
   void unsetMenu() {
     state = state.copyWith(menu: null);
+  }
+
+  void setError(Object e, StackTrace stackTrace) {
+    print(e);
+    print(stackTrace);
+    state = state.copyWith(error: e);
   }
 
   void setCarbGramPerUnit(double value) {
@@ -186,11 +193,5 @@ class RecordFormController {
       setError(e, stackTrace);
       state = state.copyWith(isProcessing: false);
     }
-  }
-
-  void setError(Object e, StackTrace stackTrace) {
-    print(e);
-    print(stackTrace);
-    state = state.copyWith(error: e);
   }
 }
