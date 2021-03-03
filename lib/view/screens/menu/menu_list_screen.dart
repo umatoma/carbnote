@@ -1,9 +1,11 @@
+import 'package:carbnote/models/app_notification_model.dart';
 import 'package:carbnote/view/screens/menu/menu_form_screen.dart';
 import 'package:carbnote/view/screens/menu/menu_list_state.dart';
 import 'package:carbnote/view/screens/record/record_form_screen.dart';
 import 'package:carbnote/view/screens/record/record_form_state.dart';
 import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/form.dart';
+import 'package:carbnote/view/widgets/model/app_notification.dart';
 import 'package:carbnote/view/widgets/model/menu.dart';
 import 'package:carbnote/view/widgets/nav_bar.dart';
 import 'package:carbnote/view/widgets/scaffold.dart';
@@ -38,26 +40,37 @@ class MenuListScreen extends HookWidget {
           child: const Text('手動で記録'),
         ),
       ),
-      body: DefaultTabController(
-        length: 2,
-        child: Column(
-          children: [
-            TabBar(
-              labelColor: Theme.of(context).primaryColor,
-              tabs: const [
-                Tab(child: Text('検索')),
-                Tab(child: Text('MYメニュー')),
-              ],
-            ),
-            const Expanded(
-              child: TabBarView(
-                children: [
-                  MenuSearchBody(),
-                  MyMenuListBody(),
+      body: ProviderListener(
+        onChange: (context, StateController<AppNotification> value) {
+          if (value.state != null) {
+            showAppNotification(
+              context: context,
+              notification: value.state,
+            );
+          }
+        },
+        provider: notificationStateProvider,
+        child: DefaultTabController(
+          length: 2,
+          child: Column(
+            children: [
+              TabBar(
+                labelColor: Theme.of(context).primaryColor,
+                tabs: const [
+                  Tab(child: Text('検索')),
+                  Tab(child: Text('MYメニュー')),
                 ],
               ),
-            ),
-          ],
+              const Expanded(
+                child: TabBarView(
+                  children: [
+                    MenuSearchBody(),
+                    MyMenuListBody(),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -69,6 +82,7 @@ class MenuSearchBody extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = useProvider(textEditingControllerProvider);
     final asyncMenus = useProvider(menusStreamProvider);
 
     return Column(
@@ -79,9 +93,8 @@ class MenuSearchBody extends HookWidget {
           child: CnTextField(
             onChanged: (value) =>
                 context.read(menusControllerProvider).setInput(value),
+            controller: controller,
             hintText: 'りんご',
-            initialValue: '',
-            autofocus: true,
           ),
         ),
         const SizedBox(height: 16),
@@ -128,6 +141,16 @@ class MenuSearchBody extends HookWidget {
               );
             },
           ),
+        ),
+        const SizedBox(height: 16),
+        CnBottomButtonsContainer(
+          children: [
+            CnPrimaryButton(
+              onPressed: () =>
+                  context.read(menusControllerProvider).pickAndEstimateImage(),
+              child: const Text('画像検索'),
+            ),
+          ],
         ),
       ],
     );
@@ -190,6 +213,7 @@ class MyMenuListBody extends HookWidget {
             },
           ),
         ),
+        const SizedBox(height: 16),
         CnBottomButtonsContainer(
           children: [
             CnPrimaryButton(

@@ -34,14 +34,17 @@ class MenuRepo {
     return db;
   }
 
-  Future<List<Menu>> searchListByName(String name) async {
+  Future<List<Menu>> searchListByNames(List<String> names) async {
     final db = await getDatabase();
-    final searchName = name.kanaToHira();
-    final rows = await db.rawQuery(
-      'SELECT * FROM menus where search_name LIKE ? ORDER BY name LIMIT 100',
-      <String>['%$searchName%'],
+    final searchNames = names.map((name) => name.kanaToHira()).toList();
+    final rows = await db.query(
+      'menus',
+      where: searchNames.map((_) => 'search_name LIKE ?').join(' OR '),
+      whereArgs: searchNames.map((name) => '%$name%').toList(),
+      orderBy: 'name',
+      limit: 100,
     );
-    final foods = rows.map((row) {
+    final menus = rows.map((row) {
       return Menu(
         id: (row['id'] as int).toString(),
         category: row['category'] as String,
@@ -50,7 +53,7 @@ class MenuRepo {
         carbGramPerUnit: row['carb_gram_per_unit'] as double,
       );
     }).toList();
-    return foods;
+    return menus;
   }
 }
 
