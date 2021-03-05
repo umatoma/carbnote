@@ -3,7 +3,6 @@ const fs = require('fs');
 const csvParse = require('csv-parse/lib/sync');
 const sqlite3 = require('sqlite3');
 
-// const input = fs.readFileSync('./20201225-mxt_kagsei-mext_01110_012.csv', 'utf-8');
 const input = fs.readFileSync('./糖質一覧データ表.csv', 'utf-8');
 const rows = csvParse(input, { columns: false }).map((row) => ({
     category: row[0],

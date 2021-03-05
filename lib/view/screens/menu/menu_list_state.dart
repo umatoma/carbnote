@@ -86,16 +86,22 @@ class MenusController {
         labels ??= (await rootBundle.loadString('assets/models/labels.txt'))
             .split('\n');
         final result = await compute(predict, Tuple3(model, labels, file.path));
-        final namesString = result.entries
-            .where((entry) => entry.value > 0.6)
-            .map((entry) => utf8.decode(base64Decode(entry.key)))
-            .join(' ');
-        if (namesString.isEmpty) {
+        final names = <String>[];
+        for (final entry in result.entries) {
+          final name = utf8.decode(base64Url.decode(entry.key));
+          final value = entry.value;
+          if (value > 0.3) {
+            names.add(name);
+            print('$name:$value');
+          }
+        }
+        if (names.isEmpty) {
           read(notificationStateProvider).state = const AppNotification(
             type: AppNotificationType.warning,
             message: '画像を識別できませんでした。。。',
           );
         } else {
+          final namesString = names.join(' ');
           read(textEditingControllerProvider).text = namesString;
           read(inputStreamControllerProvider).sink.add(namesString);
           read(notificationStateProvider).state = const AppNotification(

@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:carbnote/view/screens/start/sign_in_screen.dart';
 import 'package:carbnote/view/screens/start/sign_up_screen.dart';
 import 'package:carbnote/view/widgets/button.dart';
@@ -22,12 +23,16 @@ class StartScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: Center(
-                    child: Text(
-                      'Carb Note',
-                      style: Theme.of(context)
+                    child: TypewriterAnimatedTextKit(
+                      speed: const Duration(milliseconds: 300),
+                      isRepeatingAnimation: false,
+                      textStyle: Theme.of(context)
                           .textTheme
                           .headline4
                           .apply(color: Colors.white),
+                      text: const [
+                        'Carb Note',
+                      ],
                     ),
                   ),
                 ),

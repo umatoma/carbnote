@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 
 data = ImageClassifierDataLoader.from_folder('/Users/tokahana/workspace/train/images')
 train_data, test_data = data.split(0.9)
-model = image_classifier.create(train_data)
+model = image_classifier.create(train_data, epochs=10)
 loss, accuracy = model.evaluate(test_data)
 model.export(export_dir='/Users/tokahana/workspace/carbnote/assets/models', export_format=ExportFormat.LABEL)
 model.export(export_dir='/Users/tokahana/workspace/carbnote/assets/models', export_format=ExportFormat.TFLITE)
