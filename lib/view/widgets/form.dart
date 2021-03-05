@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carbnote/view/widgets/animation.dart';
+import 'package:carbnote/view/widgets/button.dart';
 import 'package:carbnote/view/widgets/image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -217,114 +219,6 @@ class CnImageField extends StatelessWidget {
   }
 }
 
-class CnGramField extends StatefulWidget {
-  const CnGramField({
-    @required this.onChanged,
-    @required this.gram,
-  }) : super();
-
-  final void Function(int value) onChanged;
-  final int gram;
-
-  @override
-  _CnGramFieldState createState() => _CnGramFieldState();
-}
-
-class _CnGramFieldState extends State<CnGramField> {
-  final int _digits = 3;
-  List<FixedExtentScrollController> _controllers = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _controllers = widget.gram
-        .toString()
-        .padLeft(_digits, '0')
-        .split('')
-        .map((s) => int.tryParse(s) ?? 0)
-        .map((n) => FixedExtentScrollController(initialItem: n))
-        .toList();
-  }
-
-  @override
-  void dispose() {
-    for (final controller in _controllers) {
-      controller?.dispose();
-    }
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final items = List.generate(10, (i) {
-      return Text(
-        '$i',
-        style: TextStyle(
-          color: Theme.of(context).primaryColor,
-        ),
-      );
-    }).toList();
-    return Container(
-      width: double.infinity,
-      height: 72,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey[300]),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          for (final controller in _controllers)
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: _buildPicker(
-                  onSelectedItemChanged: (i) => _onSelectedItemChanged(),
-                  controller: controller,
-                  looping: true,
-                  children: items,
-                ),
-              ),
-            ),
-          Container(
-            width: 24,
-            height: 32,
-            color: Colors.grey[200],
-            child: const Center(
-              child: Text('g'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _onSelectedItemChanged() {
-    final gramString = _controllers.map((c) => c.selectedItem % 10).join('');
-    final gram = int.tryParse(gramString) ?? 0;
-    widget.onChanged(gram);
-  }
-
-  Widget _buildPicker({
-    @required void Function(int i) onSelectedItemChanged,
-    @required FixedExtentScrollController controller,
-    @required bool looping,
-    @required List<Widget> children,
-  }) {
-    return CupertinoPicker(
-      onSelectedItemChanged: onSelectedItemChanged,
-      scrollController: controller,
-      itemExtent: 32,
-      looping: looping,
-      backgroundColor: Colors.white,
-      selectionOverlay: const CupertinoPickerDefaultSelectionOverlay(
-        capLeftEdge: false,
-        capRightEdge: false,
-      ),
-      children: children,
-    );
-  }
-}
-
 class CnSlider extends StatelessWidget {
   const CnSlider({
     Key key,
@@ -412,6 +306,43 @@ class CnSlider extends StatelessWidget {
           const SizedBox(width: 8),
         ],
       ),
+    );
+  }
+}
+
+class CnCheckBox extends StatelessWidget {
+  const CnCheckBox({
+    Key key,
+    @required this.onPressed,
+    @required this.child,
+    @required this.value,
+  }) : super(key: key);
+
+  final void Function(bool value) onPressed;
+  final Widget child;
+  final bool value;
+
+  @override
+  Widget build(BuildContext context) {
+    return CnSecondaryButton(
+      onPressed: () => onPressed(!value),
+      height: 24,
+      leading: CnScaleSwitcher(
+        child: Icon(
+          CupertinoIcons.checkmark_alt,
+          key: ValueKey(value),
+          size: 16,
+          color: value ? Theme.of(context).primaryColor : Colors.grey[300],
+        ),
+      ),
+      child: DefaultTextStyle(
+        style: Theme.of(context)
+            .textTheme
+            .overline
+            .apply(color: Theme.of(context).primaryColor),
+        child: child,
+      ),
+      trailing: const SizedBox(width: 16),
     );
   }
 }

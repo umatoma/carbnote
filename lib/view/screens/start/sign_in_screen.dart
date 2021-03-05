@@ -58,6 +58,7 @@ class SignInScreen extends HookWidget {
                             hintText: 'メールアドレス',
                             keyboardType: TextInputType.emailAddress,
                             prefixIcon: CupertinoIcons.mail,
+                            autofocus: true,
                           ),
                           const SizedBox(height: 16),
                           CnTextField(

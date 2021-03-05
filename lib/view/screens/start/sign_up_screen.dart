@@ -281,6 +281,14 @@ class SetSignInSettingPage extends HookWidget {
                           .apply(color: Theme.of(context).primaryColor),
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  CnCheckBox(
+                    onPressed: (value) => context
+                        .read(signUpStateProvider)
+                        .setIsAgreedToTermsOfService(value),
+                    value: state.form.isAgreedToTermsOfService,
+                    child: const Text('利用規約に同意する'),
+                  ),
                 ],
               ),
             ),
@@ -289,17 +297,17 @@ class SetSignInSettingPage extends HookWidget {
               shadowColor: Colors.black,
               children: [
                 CnPrimaryButton(
-                  onPressed: state.canSubmitSignInSetting
-                      ? () => context
-                          .read(signUpStateProvider)
-                          .sumbitSignInSetting()
+                  onPressed: state.canSubmitForm
+                      ? () => context.read(signUpStateProvider).sumbitForm()
                       : null,
                   child: const Text('登録'),
                 ),
                 CnSecondaryButton(
-                  onPressed: () => context
-                      .read(signUpStateProvider)
-                      .sumbitSignInSetting(skip: true),
+                  onPressed: state.canSikipForm
+                      ? () => context
+                          .read(signUpStateProvider)
+                          .sumbitForm(skip: true)
+                      : null,
                   child: const Text('スキップ'),
                 ),
               ],

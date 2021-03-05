@@ -19,13 +19,15 @@ class _$SignUpFormTearOff {
       @nullable File imageFile,
       @required String nickname,
       @required String email,
-      @required String password}) {
+      @required String password,
+      bool isAgreedToTermsOfService = false}) {
     return _SignUpForm(
       goalCarbGram: goalCarbGram,
       imageFile: imageFile,
       nickname: nickname,
       email: email,
       password: password,
+      isAgreedToTermsOfService: isAgreedToTermsOfService,
     );
   }
 }
@@ -42,6 +44,7 @@ mixin _$SignUpForm {
   String get nickname;
   String get email;
   String get password;
+  bool get isAgreedToTermsOfService;
 
   @JsonKey(ignore: true)
   $SignUpFormCopyWith<SignUpForm> get copyWith;
@@ -57,7 +60,8 @@ abstract class $SignUpFormCopyWith<$Res> {
       @nullable File imageFile,
       String nickname,
       String email,
-      String password});
+      String password,
+      bool isAgreedToTermsOfService});
 }
 
 /// @nodoc
@@ -75,6 +79,7 @@ class _$SignUpFormCopyWithImpl<$Res> implements $SignUpFormCopyWith<$Res> {
     Object nickname = freezed,
     Object email = freezed,
     Object password = freezed,
+    Object isAgreedToTermsOfService = freezed,
   }) {
     return _then(_value.copyWith(
       goalCarbGram:
@@ -83,6 +88,9 @@ class _$SignUpFormCopyWithImpl<$Res> implements $SignUpFormCopyWith<$Res> {
       nickname: nickname == freezed ? _value.nickname : nickname as String,
       email: email == freezed ? _value.email : email as String,
       password: password == freezed ? _value.password : password as String,
+      isAgreedToTermsOfService: isAgreedToTermsOfService == freezed
+          ? _value.isAgreedToTermsOfService
+          : isAgreedToTermsOfService as bool,
     ));
   }
 }
@@ -98,7 +106,8 @@ abstract class _$SignUpFormCopyWith<$Res> implements $SignUpFormCopyWith<$Res> {
       @nullable File imageFile,
       String nickname,
       String email,
-      String password});
+      String password,
+      bool isAgreedToTermsOfService});
 }
 
 /// @nodoc
@@ -118,6 +127,7 @@ class __$SignUpFormCopyWithImpl<$Res> extends _$SignUpFormCopyWithImpl<$Res>
     Object nickname = freezed,
     Object email = freezed,
     Object password = freezed,
+    Object isAgreedToTermsOfService = freezed,
   }) {
     return _then(_SignUpForm(
       goalCarbGram:
@@ -126,6 +136,9 @@ class __$SignUpFormCopyWithImpl<$Res> extends _$SignUpFormCopyWithImpl<$Res>
       nickname: nickname == freezed ? _value.nickname : nickname as String,
       email: email == freezed ? _value.email : email as String,
       password: password == freezed ? _value.password : password as String,
+      isAgreedToTermsOfService: isAgreedToTermsOfService == freezed
+          ? _value.isAgreedToTermsOfService
+          : isAgreedToTermsOfService as bool,
     ));
   }
 }
@@ -137,11 +150,13 @@ class _$_SignUpForm implements _SignUpForm {
       @nullable this.imageFile,
       @required this.nickname,
       @required this.email,
-      @required this.password})
+      @required this.password,
+      this.isAgreedToTermsOfService = false})
       : assert(goalCarbGram != null),
         assert(nickname != null),
         assert(email != null),
-        assert(password != null);
+        assert(password != null),
+        assert(isAgreedToTermsOfService != null);
 
   @override
   final int goalCarbGram;
@@ -154,10 +169,13 @@ class _$_SignUpForm implements _SignUpForm {
   final String email;
   @override
   final String password;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isAgreedToTermsOfService;
 
   @override
   String toString() {
-    return 'SignUpForm(goalCarbGram: $goalCarbGram, imageFile: $imageFile, nickname: $nickname, email: $email, password: $password)';
+    return 'SignUpForm(goalCarbGram: $goalCarbGram, imageFile: $imageFile, nickname: $nickname, email: $email, password: $password, isAgreedToTermsOfService: $isAgreedToTermsOfService)';
   }
 
   @override
@@ -177,7 +195,11 @@ class _$_SignUpForm implements _SignUpForm {
                 const DeepCollectionEquality().equals(other.email, email)) &&
             (identical(other.password, password) ||
                 const DeepCollectionEquality()
-                    .equals(other.password, password)));
+                    .equals(other.password, password)) &&
+            (identical(
+                    other.isAgreedToTermsOfService, isAgreedToTermsOfService) ||
+                const DeepCollectionEquality().equals(
+                    other.isAgreedToTermsOfService, isAgreedToTermsOfService)));
   }
 
   @override
@@ -187,7 +209,8 @@ class _$_SignUpForm implements _SignUpForm {
       const DeepCollectionEquality().hash(imageFile) ^
       const DeepCollectionEquality().hash(nickname) ^
       const DeepCollectionEquality().hash(email) ^
-      const DeepCollectionEquality().hash(password);
+      const DeepCollectionEquality().hash(password) ^
+      const DeepCollectionEquality().hash(isAgreedToTermsOfService);
 
   @JsonKey(ignore: true)
   @override
@@ -201,7 +224,8 @@ abstract class _SignUpForm implements SignUpForm {
       @nullable File imageFile,
       @required String nickname,
       @required String email,
-      @required String password}) = _$_SignUpForm;
+      @required String password,
+      bool isAgreedToTermsOfService}) = _$_SignUpForm;
 
   @override
   int get goalCarbGram;
@@ -214,6 +238,8 @@ abstract class _SignUpForm implements SignUpForm {
   String get email;
   @override
   String get password;
+  @override
+  bool get isAgreedToTermsOfService;
   @override
   @JsonKey(ignore: true)
   _$SignUpFormCopyWith<_SignUpForm> get copyWith;
@@ -410,23 +436,36 @@ class _$_SignUpState implements _SignUpState {
     return _canSubmitProfile;
   }
 
-  bool _didcanSubmitSignInSetting = false;
-  bool _canSubmitSignInSetting;
+  bool _didcanSubmitForm = false;
+  bool _canSubmitForm;
 
   @override
-  bool get canSubmitSignInSetting {
-    if (_didcanSubmitSignInSetting == false) {
-      _didcanSubmitSignInSetting = true;
-      _canSubmitSignInSetting = form.email.isNotEmpty &&
+  bool get canSubmitForm {
+    if (_didcanSubmitForm == false) {
+      _didcanSubmitForm = true;
+      _canSubmitForm = form.email.isNotEmpty &&
           form.email.contains('@') &&
-          form.password.isNotEmpty;
+          form.password.isNotEmpty &&
+          form.isAgreedToTermsOfService;
     }
-    return _canSubmitSignInSetting;
+    return _canSubmitForm;
+  }
+
+  bool _didcanSikipForm = false;
+  bool _canSikipForm;
+
+  @override
+  bool get canSikipForm {
+    if (_didcanSikipForm == false) {
+      _didcanSikipForm = true;
+      _canSikipForm = form.isAgreedToTermsOfService;
+    }
+    return _canSikipForm;
   }
 
   @override
   String toString() {
-    return 'SignUpState(isProcessing: $isProcessing, error: $error, page: $page, itemCount: $itemCount, controller: $controller, form: $form, canSubmitProfile: $canSubmitProfile, canSubmitSignInSetting: $canSubmitSignInSetting)';
+    return 'SignUpState(isProcessing: $isProcessing, error: $error, page: $page, itemCount: $itemCount, controller: $controller, form: $form, canSubmitProfile: $canSubmitProfile, canSubmitForm: $canSubmitForm, canSikipForm: $canSikipForm)';
   }
 
   @override

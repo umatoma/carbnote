@@ -24,6 +24,7 @@ abstract class SignUpForm with _$SignUpForm {
     @required String nickname,
     @required String email,
     @required String password,
+    @Default(false) bool isAgreedToTermsOfService,
   }) = _SignUpForm;
 }
 
@@ -42,10 +43,14 @@ abstract class SignUpState with _$SignUpState {
   bool get canSubmitProfile => form.nickname.isNotEmpty;
 
   @late
-  bool get canSubmitSignInSetting =>
+  bool get canSubmitForm =>
       form.email.isNotEmpty &&
       form.email.contains('@') &&
-      form.password.isNotEmpty;
+      form.password.isNotEmpty &&
+      form.isAgreedToTermsOfService;
+
+  @late
+  bool get canSikipForm => form.isAgreedToTermsOfService;
 }
 
 class SignUpStateNotifier extends StateNotifier<SignUpState> {
@@ -101,6 +106,12 @@ class SignUpStateNotifier extends StateNotifier<SignUpState> {
     );
   }
 
+  void setIsAgreedToTermsOfService(bool value) {
+    state = state.copyWith(
+      form: state.form.copyWith(isAgreedToTermsOfService: value),
+    );
+  }
+
   void submitGoal() {
     state = state.copyWith(itemCount: 2);
     nextPage();
@@ -141,7 +152,7 @@ class SignUpStateNotifier extends StateNotifier<SignUpState> {
     );
   }
 
-  Future<void> sumbitSignInSetting({bool skip = false}) async {
+  Future<void> sumbitForm({bool skip = false}) async {
     state = state.copyWith(isProcessing: true);
     try {
       final authRepo = read(authUserRepoProvider);
